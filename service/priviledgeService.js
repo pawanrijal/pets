@@ -1,15 +1,15 @@
 
-const { priviledge,} = require("../lib/databaseConnection");
-const {alreadyExistsException}=require("../exceptions/alreadyExistsException")
-const {notFoundException}=require("../exceptions/notFoundException")
+const { priviledge, } = require("../lib/databaseConnection");
+const { alreadyExistsException } = require("../exceptions/alreadyExistsException")
+const { notFoundException } = require("../exceptions/notFoundException")
 
 class PriviledgeService {
     async create(payload) {
-        let priviledgeData = await priviledge.findOne({where:{method:payload.method}});
-        if(priviledgeData!=null){
+        let priviledgeData = await priviledge.findOne({ where: { method: payload.method } });
+        if (priviledgeData != null) {
             throw new alreadyExistsException("Privilege")
         }
-        let data=await priviledge.create(payload)
+        let data = await priviledge.create(payload)
         return data;
     }
 
@@ -28,10 +28,10 @@ class PriviledgeService {
     }
 
     async findById(id) {
-        const privelegeData=await priviledge.findOne({where:{id}});
-        if(privelegeData===null)
+        const privelegeData = await priviledge.findOne({ where: { id } });
+        if (privelegeData === null)
             throw new notFoundException("Privilege")
-        const returnData = await priviledge.findOne({ where: { id }});
+        const returnData = await priviledge.findOne({ where: { id } });
         return returnData;
     }
     async delete(id) {

@@ -6,4 +6,4 @@ class passwordMismatchException extends Error {
     }
 }
 
-module.exports = {passwordMismatchException};
+module.exports = { passwordMismatchException };

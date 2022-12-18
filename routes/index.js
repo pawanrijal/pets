@@ -8,5 +8,4 @@ exports.initRoutes = (app) => {
   RoleRoute(app);
   PriviledgeRoute(app);
   ModuleRoute(app);
-
 };

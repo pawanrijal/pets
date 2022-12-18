@@ -1,10 +1,12 @@
+const roleModel = require("./roleModel");
+
 module.exports = (sequelize, type) => {
   return sequelize.define(
     "users",
     {
       id: {
         type: type.INTEGER,
-          autoIncrement: true,
+        autoIncrement: true,
         primaryKey: true,
       },
       username: {
@@ -20,20 +22,13 @@ module.exports = (sequelize, type) => {
       },
       email: {
         type: type.STRING,
-          unique:true,
+        unique: true,
         allowNull: false,
       },
-      due_amount: {
+      roleId: {
         type: type.INTEGER,
-          defaultValue: 0,
-      },
-      phone: {
-        type: type.STRING,
-      },
-        roleId:{
-          type:type.INTEGER,
-            defaultValue:2,
-        }
+        defaultValue: 2
+      }
     },
     {
       timestamps: true,

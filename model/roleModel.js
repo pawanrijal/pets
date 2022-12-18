@@ -1,20 +1,20 @@
-module.exports=(sequelize,type)=>{
-    return sequelize.define("roles",{
+module.exports = (sequelize, type) => {
+    return sequelize.define("roles", {
         id: {
             type: type.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        name:{
+        name: {
             type: type.STRING,
             allowNull: false,
             unique: true
         },
-        description:{
-            type:type.STRING,
-            allowNull:false
+        description: {
+            type: type.STRING,
+            allowNull: false
         }
-    },{
-        timestamps:true
+    }, {
+        timestamps: true
     })
 }

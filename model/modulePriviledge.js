@@ -1,5 +1,5 @@
-module.exports=(sequelize,type)=>{
-    return sequelize.define("modulePriviledges",{
+module.exports = (sequelize, type) => {
+    return sequelize.define("modulePriviledges", {
         id: {
             type: type.INTEGER,
             primaryKey: true,
@@ -14,7 +14,7 @@ module.exports=(sequelize,type)=>{
         },
 
 
-    },{
-        timestamps:true
+    }, {
+        timestamps: true
     })
 }

@@ -40,7 +40,6 @@ app.get("/test", (req, res) => {
 //if Routes Not Found
 app.use((req, res, next) => {
   const err = new HttpException(404, "Route doesnot exist");
-
   next(err);
 });
 
@@ -48,7 +47,7 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   err.success = false;
   err.status = err.status || 500;
-  err.message = err.message || "Something went wrong";
+  err.message = err.stack || "Something went wrong";
   err.data = err.data|| null;
 
   res.status(err.status).json({

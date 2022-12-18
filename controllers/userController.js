@@ -8,9 +8,10 @@ require("dotenv").config();
 class UserController {
   async create(req, res, next) {
     try {
-          const user=await UserService.create(req.body);
-          successResponse(res, 200, user, "User Created");
+      const user = await UserService.create(req.body);
+      successResponse(res, 200, user, "User Created");
     } catch (err) {
+      console.log(err)
       next(err);
     }
   }
@@ -18,11 +19,11 @@ class UserController {
   async update(req, res, next) {
     try {
       const { id } = req.params;
-      if(req.headers.authorization===null||req.headers.authorization===undefined){
+      if (req.headers.authorization === null || req.headers.authorization === undefined) {
         throw new AuthorizationException();
       }
       const token = req.headers.authorization.split(" ")[1];
-      const userData = await UserService.update(req.body, id,token);
+      const userData = await UserService.update(req.body, id, token);
       successResponse(res, 200, userData, "User updated");
     } catch (err) {
       next(err);
@@ -34,6 +35,7 @@ class UserController {
       const userData = await UserService.findAll();
       successResponse(res, 200, userData, "User fetched");
     } catch (err) {
+      console.log(err)
       next(err);
     }
   }
@@ -49,7 +51,7 @@ class UserController {
   }
 
   async delete(req, res, next) {
-    if(req.headers.authorization===null||req.headers.authorization===undefined){
+    if (req.headers.authorization === null || req.headers.authorization === undefined) {
       throw new AuthorizationException();
     }
     const token = req.headers.authorization.split(" ")[1];
@@ -57,8 +59,8 @@ class UserController {
 
     const id = req.params.id;
     try {
-        const userData = await UserService.delete(id,token);
-        successResponse(res, 200, userData, "User Deleted");
+      const userData = await UserService.delete(id, token);
+      successResponse(res, 200, userData, "User Deleted");
     } catch (err) {
       next(err);
     }
@@ -67,7 +69,7 @@ class UserController {
   async login(req, res, next) {
     try {
       const data = await UserService.login(req.body);
-      successResponse(res,200,data,"Logged in Successfully")
+      successResponse(res, 200, data, "Logged in Successfully")
     } catch (err) {
       console.log(err);
       next(err);
@@ -86,12 +88,12 @@ class UserController {
       next(err);
     }
   }
-  async changePassword(req,res,next){
-    try{
+  async changePassword(req, res, next) {
+    try {
       const userData = await UserService.changePassword(req.body)
       successResponse(res, 200, userData, "Password Changed");
     }
-    catch (err){
+    catch (err) {
       next(err)
     }
   }

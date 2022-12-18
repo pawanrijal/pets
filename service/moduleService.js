@@ -1,15 +1,15 @@
 
-const {modules, role} = require("../lib/databaseConnection");
-const {alreadyExistsException}=require("../exceptions/alreadyExistsException")
-const {notFoundException}=require("../exceptions/notFoundException")
+const { modules, role } = require("../lib/databaseConnection");
+const { alreadyExistsException } = require("../exceptions/alreadyExistsException")
+const { notFoundException } = require("../exceptions/notFoundException")
 
 class ModuleService {
     async create(payload) {
-        let moduleData = await modules.findOne({where:{path:payload.path}});
-        if(moduleData!=null){
+        let moduleData = await modules.findOne({ where: { path: payload.path } });
+        if (moduleData != null) {
             throw new alreadyExistsException("Module")
         }
-        let data=await modules.create(payload)
+        let data = await modules.create(payload)
         return data;
     }
 
@@ -28,11 +28,11 @@ class ModuleService {
     }
 
     async findById(id) {
-        let moduleData = await modules.findOne({where:{id}});
-        if(moduleData===null){
+        let moduleData = await modules.findOne({ where: { id } });
+        if (moduleData === null) {
             throw new notFoundException("Module")
         }
-        const returnData = await modules.findOne({ where: { id }});
+        const returnData = await modules.findOne({ where: { id } });
         return returnData;
     }
     async delete(id) {

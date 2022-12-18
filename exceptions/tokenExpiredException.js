@@ -6,4 +6,4 @@ class tokenExpiredException extends Error {
     }
 }
 
-module.exports = {tokenExpiredException};
+module.exports = { tokenExpiredException };

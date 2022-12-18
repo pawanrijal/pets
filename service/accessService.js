@@ -1,9 +1,9 @@
-const RoleService=require("../service/roleService")
-const moduleService=require("../service/moduleService")
-const privilegeService=require("../service/priviledgeService")
-const {modulePriviledge,access}=require("../lib/databaseConnection")
-const {alreadyExistsException}=require("../exceptions/alreadyExistsException")
-const {notFoundException}=require("../exceptions/notFoundException")
+const RoleService = require("../service/roleService")
+const moduleService = require("../service/moduleService")
+const privilegeService = require("../service/priviledgeService")
+const { modulePriviledge, access } = require("../lib/databaseConnection")
+const { alreadyExistsException } = require("../exceptions/alreadyExistsException")
+const { notFoundException } = require("../exceptions/notFoundException")
 
 
 class accessService {
@@ -69,11 +69,13 @@ class accessService {
             throw new notFoundException("Module with this privilege");
         }
         // remove the mapping
-        await access.destroy({where:{
-            roleId: role.id,
-            modulePriviledgeId: ModulePriviledge.id,
-        }});
+        await access.destroy({
+            where: {
+                roleId: role.id,
+                modulePriviledgeId: ModulePriviledge.id,
+            }
+        });
     }
 }
 
-module.exports=new accessService()
+module.exports = new accessService()

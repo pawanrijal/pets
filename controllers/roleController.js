@@ -1,12 +1,12 @@
 const roleService = require("../service/roleService");
 const successResponse = require("../utils/successResponse");
 
-const accessService=require("../service/accessService")
+const accessService = require("../service/accessService")
 
 class RoleController {
     async create(req, res, next) {
         try {
-            let data=await roleService.create(req.body)
+            let data = await roleService.create(req.body);
             successResponse(res, 400, data, "created Successfully");
         } catch (err) {
             next(err);
@@ -45,27 +45,27 @@ class RoleController {
     async delete(req, res, next) {
         try {
             const id = req.params.id;
-                const roleData = await roleService.delete(id);
-                successResponse(res, 200, roleData, "Payment Deleted");
+            const roleData = await roleService.delete(id);
+            successResponse(res, 200, roleData, "Payment Deleted");
         } catch (err) {
             next(err);
         }
     }
 
-    async assignRoleToUser(req,res,next){
-        try{
-        await roleService.assignRoleToUser(req.body)
-            successResponse(res,200,null,"Assigned Role TO User")
-        }catch(err){
+    async assignRoleToUser(req, res, next) {
+        try {
+            await roleService.assignRoleToUser(req.body)
+            successResponse(res, 200, null, "Assigned Role TO User")
+        } catch (err) {
             next(err)
         }
     }
 
-    async removeRoleToUser(req,res,next){
-        try{
+    async removeRoleToUser(req, res, next) {
+        try {
             await roleService.removeRoleToUser(req.body)
-            successResponse(res,200,null,"Removed Role TO User")
-        }catch(err){
+            successResponse(res, 200, null, "Removed Role TO User")
+        } catch (err) {
             next(err)
         }
     }

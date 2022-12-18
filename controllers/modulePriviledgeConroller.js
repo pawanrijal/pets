@@ -1,11 +1,11 @@
-const modulePriviledgeService=require("../service/modulePriviledgeService")
+const modulePriviledgeService = require("../service/modulePriviledgeService")
 const successResponse = require("../utils/successResponse");
 
 //add priviledge to module
-class modulePriviledgeConroller{
-    async addPrivilegeToModule(req,res,next){
+class modulePriviledgeConroller {
+    async addPrivilegeToModule(req, res, next) {
         try {
-            let data=await modulePriviledgeService.addPrivilegeToModule(req.body)
+            let data = await modulePriviledgeService.addPrivilegeToModule(req.body)
             successResponse(res, 400, data, "created Successfully");
         } catch (err) {
             next(err);
@@ -14,7 +14,7 @@ class modulePriviledgeConroller{
 
 
     //remove privilege from module
-    async removePrivilegeFromModule(req,res,next){
+    async removePrivilegeFromModule(req, res, next) {
         try {
             await modulePriviledgeService.removePrivilegeFromModule(req.body)
             successResponse(res, 400, null, "Removed Successfully");
@@ -27,4 +27,4 @@ class modulePriviledgeConroller{
 
 
 
-module.exports=new modulePriviledgeConroller()
+module.exports = new modulePriviledgeConroller()

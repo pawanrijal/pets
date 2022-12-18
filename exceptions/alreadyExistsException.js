@@ -3,8 +3,7 @@ class alreadyExistsException extends Error {
         super(`${source} already exists`);
         this.status = 409;
         this.message = `${source} already exists`;
-
     }
 }
 
-module.exports =  {alreadyExistsException};
+module.exports = { alreadyExistsException };
