@@ -1,5 +1,4 @@
-const { user } = require("../lib/databaseConnection");
-const { order, role, sequelize } = require("../lib/databaseConnection");
+const { user, userRole, role } = require("../lib/databaseConnection");
 const bcrypt = require("bcrypt");
 const { passwordMismatchException } = require("../exceptions/passwordMismatchException")
 const { alreadyExistsException } = require("../exceptions/alreadyExistsException")
@@ -9,7 +8,6 @@ const AuthorizationException = require("../exceptions/authorizationException");
 const generateToken = require("../utils/tokenGenerator");
 const jwt = require("jsonwebtoken");
 const { tokenExpiredException } = require("../exceptions/tokenExpiredException");
-const { QueryTypes } = require("sequelize");
 class UserService {
   async create(payload) {
     //check profile pic of user
@@ -25,11 +23,10 @@ class UserService {
         const salt = await bcrypt.genSalt(saltRounds);
         const hash = await bcrypt.hash(password, salt);
         payload.password = hash;
-
-        const data = await user.create(payload);
-        data.password = undefined;
-        return data;
-
+        const userData = await user.create(payload)//user create
+        await userRole.create({ userId: userData.id, roleId: 2 });//create role for default customer
+        userData.password = undefined;
+        return userData;
       } else {
         throw new passwordMismatchException();
       }
@@ -109,7 +106,7 @@ class UserService {
     return returnData;
   }
 
-  
+
   async login(payload) {
     const { username, password } = payload;
     let _user = await user.findOne({ where: { username: username } });
@@ -133,8 +130,7 @@ class UserService {
       where: {
         id: decoded.sub,
       },
-      include: [role],
-      attributes: { exclude: ["password", "createdAt", "updatedAt", "id"] },
+      include: { model: role },
     });
     return _user;
   }

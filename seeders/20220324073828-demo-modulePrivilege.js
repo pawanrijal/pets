@@ -107,7 +107,7 @@ module.exports = {
           },
 
           {
-            id:9,
+            id:13,
             module_id: 4, // access
             privilege_id: 1, // create
               created_at: new Date(),
@@ -115,21 +115,21 @@ module.exports = {
 
           },
           {
-            id:10,
+            id:14,
             module_id: 4, // access
             privilege_id: 2, // read
               created_at: new Date(),
             updated_at: new Date(),
           },
           {
-            id:11,
+            id:15,
             module_id: 4, // access
             privilege_id: 3, // update
-              created_at: new Date(),
+            created_at: new Date(),
             updated_at: new Date(),
           },
           {
-            id:12,
+            id:16,
             module_id: 4, // access
             privilege_id: 4, // delete
               created_at: new Date(),

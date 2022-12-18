@@ -6,5 +6,10 @@ module.exports = (sequelize, type) => {
         modulePriviledgeId: {
             type: type.INTEGER
         }
+    }, {
+        defaultScope: {
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+        },
+        timestamps: true
     });
 };

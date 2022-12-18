@@ -28,10 +28,13 @@ module.exports = (sequelize, type) => {
       roleId: {
         type: type.INTEGER,
         defaultValue: 2
-      }
+      },
     },
     {
-      timestamps: true,
+      defaultScope: {
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+      },
+      timestamps: true
     }
   );
 };

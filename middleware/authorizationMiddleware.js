@@ -24,10 +24,10 @@ const authorizationMiddleware = async (req, res, next) => {
         }
         // console.log(decoded);
         const userData = await UserService.findById(decoded.sub);
-        if(userData.roleId===1){
-            console.log("Authorized for admin")
-            next()
-        }
+        // if(userData.roleId===1){
+        //     console.log("Authorized for admin")
+        //     next()
+        // }
         const roleData = await RoleService.findById(userData.roleId);
         if (userData === undefined || userData === null) {
             throw new notFoundException("User")

@@ -28,28 +28,7 @@ module.exports = {
         password: "$2b$10$ZFpfY4F/1dy0z1.sqd/.ueNrDqcbk6etJnOhuh8kgkB1GlnUTbakq",
         profile_pic: null,
         email: "ram@gmail.com",
-
-        created_at: new Date(),
-        updated_at: new Date(),
-
-      },
-      {
-        id: 3,
-        username: "Shyam",
-        password: "$2b$10$ZFpfY4F/1dy0z1.sqd/.ueNrDqcbk6etJnOhuh8kgkB1GlnUTbakq",
-        email: "shyam@gmail.com",
-
-        created_at: new Date(),
-        updated_at: new Date(),
-
-      },
-      {
-        id: 4,
-        username: "Hari",
-        password: "$2b$10$ZFpfY4F/1dy0z1.sqd/.ueNrDqcbk6etJnOhuh8kgkB1GlnUTbakq",
-        profile_pic: null,
-        email: "hari@gmail.com",
-
+        role_id:2,
         created_at: new Date(),
         updated_at: new Date(),
 
