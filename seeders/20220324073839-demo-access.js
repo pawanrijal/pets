@@ -113,6 +113,57 @@ module.exports = {
           created_at: new Date(),
           updated_at: new Date(),
         },
+
+        {
+          role_id: 1, // admin
+          module_priviledge_id: 17, // to create party
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          role_id: 1, // admin
+          module_priviledge_id: 18, // to read party
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          role_id: 1, // admin
+          module_priviledge_id: 19, // to update party
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          role_id: 1, // admin
+          module_priviledge_id: 20, // to delete party
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+
+
+        {
+          role_id: 2, // customer
+          module_priviledge_id: 17, // to create party
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          role_id: 2, // customer
+          module_priviledge_id: 18, // to read party
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          role_id: 2, // customer
+          module_priviledge_id: 19, // to update party
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
+        {
+          role_id: 2, // customer
+          module_priviledge_id: 20, // to delete party
+          created_at: new Date(),
+          updated_at: new Date(),
+        },
       ],
       {}
     );

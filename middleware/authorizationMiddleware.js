@@ -54,10 +54,10 @@ const authorizationMiddleware = async (req, res, next) => {
         });
 
         if (module === null) {
-            throw new notFoundException("Module")
+            throw new AuthorizationException()
         }
         if (privilege === null) {
-            throw new notFoundException("Privilege")
+            throw new AuthorizationException()
         }
 
         // find mapping between `module` and `privilege`

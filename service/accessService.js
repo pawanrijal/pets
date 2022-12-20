@@ -36,10 +36,12 @@ class accessService {
         }
 
         // create the mapping
-        await access.create({
+        const accessData=await access.create({
             roleId: role.id,
             modulePriviledgeId: ModulePriviledge.id,
         });
+
+        return accessData;
     }
 
     async removeAccessToRole(payload) {
@@ -69,12 +71,14 @@ class accessService {
             throw new notFoundException("Module with this privilege");
         }
         // remove the mapping
-        await access.destroy({
+        const accessData=await access.destroy({
             where: {
                 roleId: role.id,
                 modulePriviledgeId: ModulePriviledge.id,
             }
         });
+
+        return accessData;
     }
 }
 

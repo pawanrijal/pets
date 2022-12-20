@@ -46,6 +46,14 @@ module.exports = {
             created_at: new Date(),
             updated_at: new Date(),
           },
+          {
+            id: 5,
+            name: "Party",
+            path: "/api/party",
+            description:"",
+            created_at: new Date(),
+            updated_at: new Date(),
+          },
         ],
         {}
     );

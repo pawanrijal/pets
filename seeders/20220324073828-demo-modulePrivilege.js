@@ -135,6 +135,36 @@ module.exports = {
               created_at: new Date(),
             updated_at: new Date(),
           },
+
+          {
+            id:17,
+            module_id: 5, // party
+            privilege_id: 1, // create
+              created_at: new Date(),
+            updated_at: new Date(),
+
+          },
+          {
+            id:18,
+            module_id: 5, // party
+            privilege_id: 2, // read
+              created_at: new Date(),
+            updated_at: new Date(),
+          },
+          {
+            id:19,
+            module_id: 5, // party
+            privilege_id: 3, // update
+            created_at: new Date(),
+            updated_at: new Date(),
+          },
+          {
+            id:20,
+            module_id: 5, // party
+            privilege_id: 4, // delete
+              created_at: new Date(),
+            updated_at: new Date(),
+          },
         ],
         {}
     );

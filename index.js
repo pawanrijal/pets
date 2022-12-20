@@ -47,13 +47,16 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   err.success = false;
   err.status = err.status || 500;
-  err.message = err.stack || "Something went wrong";
+  err.message = err.message || "Something went wrong";
+  err.stack = err.stack;
   err.data = err.data|| null;
 
   res.status(err.status).json({
     success: err.success,
     status: err.status,
     message: err.message,
+    stack:err.stack,
+    error:err.errors,
     data: err.data,
   });
 });

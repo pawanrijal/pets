@@ -16,7 +16,7 @@ class ModuleController {
         try {
             const { id } = req.params;
             const moduleData = await moduleService.update(req.body, id);
-            successResponse(res, 200, moduleData, "Payment updated");
+            successResponse(res, 200, moduleData, "Module updated");
         } catch (err) {
             next(err);
         }
@@ -25,7 +25,7 @@ class ModuleController {
     async findAll(req, res, next) {
         try {
             const moduleData = await moduleService.findAll();
-            successResponse(res, 200, moduleData, "Payments fetched");
+            successResponse(res, 200, moduleData, "Modules fetched");
         } catch (err) {
             next(err);
         }
@@ -46,7 +46,7 @@ class ModuleController {
         try {
             const id = req.params.id;
             const moduleData = await moduleService.delete(id);
-            successResponse(res, 200, moduleData, "Payment Deleted");
+            successResponse(res, 200, moduleData, "Module Deleted");
         } catch (err) {
             next(err);
         }

@@ -6,4 +6,4 @@ class AuthorizationException extends Error {
     }
 }
 
-module.exports = {AuthorizationException};
+module.exports = AuthorizationException;
