@@ -1,5 +1,5 @@
 const PartyController = require("../controllers/party.controller");
-const { partySchema } = require("../validationSchemas/partyValidationSchema");
+const { partySchema } = require("../validationSchemas/party.schema");
 const authenticator = require("../middleware/authentication.middleware");
 const validator = require("../middleware/validation.middleware");
 module.exports = (app) => {

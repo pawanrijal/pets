@@ -6,9 +6,9 @@ const cors=require("cors")
 const morgan = require("morgan");
 app.use(cors());
 app.use(morgan("dev"));
-const { sequelize } = require("./lib/databaseConnection");
-const HttpException = require("./exceptions/HttpException");
-const { initRoutes } = require("./routes");
+const { sequelize } = require("./lib/database.connection");
+const HttpException = require("./exceptions/http.exception");
+const { initRoutes } = require("./routes/index");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 

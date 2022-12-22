@@ -1,20 +1,15 @@
-const { user, userRole, role } = require("../lib/database.connection");
+const { user } = require("../lib/database.connection");
 const bcrypt = require("bcrypt");
 const { passwordMismatchException } = require("../exceptions/passwordMismatch.exception")
 const { alreadyExistsException } = require("../exceptions/alreadyExists.exception")
 const { notFoundException } = require("../exceptions/notFound.exception")
-const AuthorizationException = require("../exceptions/authorizationException");
+const AuthenticationException = require("../exceptions/authentication.exception");
 
 const generateToken = require("../utils/tokenGenerator");
 const jwt = require("jsonwebtoken");
 const { tokenExpiredException } = require("../exceptions/tokenExpired.exception");
 class UserService {
   async create(payload) {
-    //check profile pic of user
-    if (payload.file != undefined) {
-
-      payload.profile_pic = payload.files;
-    }
     let userData = await user.findOne({ where: { username: payload.username } });//fetch user
     if (userData == null) {
       if (payload.password == payload.confirm_password) {
@@ -36,42 +31,19 @@ class UserService {
     }
   }
 
-  async update(payload, id, token) {
-    const decoded = jwt.verify(token, process.env.JSON_WEB_TOKEN_SECRET);
-
-    if (decoded.exp * 1000 < Date.now()) {//expiration check
-      throw new tokenExpiredException()
-    }
-    //check id and token id
-    if (id != decoded.sub) {
-      throw new AuthorizationException()
-    }
-    let userData = await user.findOne({ where: { id } });
-    let _user = await user.findOne({ where: { username: payload.username } })
-
-    if (userData != null) {//check if user exists
-      if (_user != null) {//check if username exists
-        throw new alreadyExistsException("Username")
-      }
+  async update(payload,user) {
 
       const saltRounds = 10;
       const { password } = payload;
       if (password != null) {//if password given then hash
         const salt = await bcrypt.genSalt(saltRounds)
         const hash = await bcrypt.hash(password, salt)
-
         payload.password = hash;
       }
-
       const returnData = user.update(payload, {
-        where: { id },
+        where: { id:user.id },
       });
       return returnData;
-
-    }
-    else {
-      throw new notFoundException("User");
-    }
   }
 
 
@@ -94,7 +66,7 @@ class UserService {
     }
     let _user = await this.findById(decoded.sub);//get user
     if (_user.roleId != 1) {//check if user is admin
-      throw new AuthorizationException();
+      throw new AuthenticationException();
     }
 
     let userData = await this.findById(id);
@@ -152,7 +124,4 @@ class UserService {
 
 }
 
-
-
-
-module.exports = new UserService();
+module.exports=new UserService();
