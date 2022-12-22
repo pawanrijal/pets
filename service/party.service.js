@@ -1,6 +1,6 @@
-const { party } = require("../lib/databaseConnection");
-const { alreadyExistsException } = require("../exceptions/alreadyExistsException")
-const { notFoundException } = require("../exceptions/notFoundException");
+const { party } = require("../lib/database.connection");
+const { alreadyExistsException } = require("../exceptions/alreadyExists.exception")
+const { notFoundException } = require("../exceptions/notFound.exception");
 const AuthorizationException = require("../exceptions/authorizationException");
 
 class PartyService {

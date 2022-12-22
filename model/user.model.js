@@ -1,4 +1,3 @@
-const roleModel = require("./roleModel");
 
 module.exports = (sequelize, type) => {
   return sequelize.define(
@@ -24,11 +23,7 @@ module.exports = (sequelize, type) => {
         type: type.STRING,
         unique: true,
         allowNull: false,
-      },
-      roleId: {
-        type: type.INTEGER,
-        defaultValue: 2
-      },
+      }
     },
     {
       defaultScope: {

@@ -1,13 +1,13 @@
-const { user, userRole, role } = require("../lib/databaseConnection");
+const { user, userRole, role } = require("../lib/database.connection");
 const bcrypt = require("bcrypt");
-const { passwordMismatchException } = require("../exceptions/passwordMismatchException")
-const { alreadyExistsException } = require("../exceptions/alreadyExistsException")
-const { notFoundException } = require("../exceptions/notFoundException")
+const { passwordMismatchException } = require("../exceptions/passwordMismatch.exception")
+const { alreadyExistsException } = require("../exceptions/alreadyExists.exception")
+const { notFoundException } = require("../exceptions/notFound.exception")
 const AuthorizationException = require("../exceptions/authorizationException");
 
 const generateToken = require("../utils/tokenGenerator");
 const jwt = require("jsonwebtoken");
-const { tokenExpiredException } = require("../exceptions/tokenExpiredException");
+const { tokenExpiredException } = require("../exceptions/tokenExpired.exception");
 class UserService {
   async create(payload) {
     //check profile pic of user

@@ -1,4 +1,4 @@
-const roleModel = require("./roleModel");
+
 
 module.exports = (sequelize, type) => {
     return sequelize.define(
