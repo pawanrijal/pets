@@ -1,26 +1,22 @@
-var JwtStrategy = require("passport-jwt").Strategy,
-  ExtractJwt = require("passport-jwt").ExtractJwt;
+// var JwtStrategy = require("passport-jwt").Strategy,
+//   ExtractJwt = require("passport-jwt").ExtractJwt;
 
-const passport = require("passport");
-const UserService = require("../service/user.service");
-var opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-opts.secretOrKey = process.env.JSON_WEB_TOKEN_SECRET;
-
-const jwt = new JwtStrategy(opts, function (jwt_payload, done) {
-  try {
-    const id = jwt_payload.sub;
-    const found_user = UserService.findById(id);
-    if (found_user) {
-      return done(null, found_user);
-    }
-    return done(null, false);
-  } catch (err) {
-    console.log(err);
+const { user } = require("../lib/database.connection");
+// var opts = {};
+// opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+// opts.secretOrKey = process.env.JSON_WEB_TOKEN_SECRET;
+const BearerStrategy=require("passport-http-bearer").Strategy; //    
+const bearerStrategy = new BearerStrategy(
+ function(token, done) {
+   user.findOne({ token: token }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false); }
+      return done(null, user, { scope: 'all' });
+    });
   }
-});
+)
 
 
 module.exports = (passport) => {
-  passport.use(jwt);
+  passport.use(bearerStrategy);
 };

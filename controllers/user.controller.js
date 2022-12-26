@@ -36,8 +36,9 @@ class UserController {
 
   async profile(req, res, next) {
     try {
-      const userData = await UserService.profile(req.user);
-      successResponse(res, 200, userData, "User Profile");
+      const user=req.user;
+      user.password=undefined;
+      successResponse(res, 200, user, "User Profile");
     } catch (err) {
       next(err);
     }

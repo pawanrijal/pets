@@ -2,13 +2,13 @@
 const jwt = require("jsonwebtoken");
 const UserService = require("../service/user.service");
 const { tokenExpiredException } = require("../exceptions/tokenExpired.exception");
-const passport = require("passport");
+
 const AuthenticationException = require("../exceptions/authentication.exception");
+
 
 
 const authenticationMiddleware = async (req, res, next) => {
     try {
-        passport.authenticate("jwt", { session: false })
         if (req.headers.authorization === null || req.headers.authorization === undefined) {
             throw new AuthenticationException();
         }
@@ -20,7 +20,7 @@ const authenticationMiddleware = async (req, res, next) => {
             throw new tokenExpiredException()
         }
         const user = await UserService.findById(decoded.sub);
-        // req.user = user;
+        req.user = user;
         // `user` is authorized pass the control to next middleware
         next();
     }

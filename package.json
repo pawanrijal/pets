@@ -20,6 +20,7 @@
     "multer": "^1.4.4",
     "nodemon": "^2.0.15",
     "passport": "^0.5.2",
+    "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.1",
     "psql": "^0.0.1",

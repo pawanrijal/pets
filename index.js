@@ -2,7 +2,7 @@ const express = require("express");
 
 
 const app = express();
-const cors=require("cors")
+const cors = require("cors")
 const morgan = require("morgan");
 app.use(cors());
 app.use(morgan("dev"));
@@ -17,6 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 initRoutes(app);
 require("./utils/passportConfig")(passport);
+
 
 
 //sequelize authentication to database
@@ -49,19 +50,19 @@ app.use((err, req, res, next) => {
   err.status = err.status || 500;
   err.message = err.message || "Something went wrong";
   err.stack = err.stack;
-  err.data = err.data|| null;
+  err.data = err.data || null;
 
   res.status(err.status).json({
     success: err.success,
     status: err.status,
     message: err.message,
-    stack:err.stack,
-    error:err.errors,
+    stack: err.stack,
+    error: err.errors,
     data: err.data,
   });
 });
 
-const PORT=process.env.PORT
+const PORT = process.env.PORT
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

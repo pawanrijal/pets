@@ -10,7 +10,7 @@ const generateToken = ({ id }) => {
                 sub: id,
             },
             KEY,
-            { expiresIn: 9000 }
+            { expiresIn: 604800 }
         );
         return token;
     } catch (err) {
