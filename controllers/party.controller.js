@@ -16,7 +16,8 @@ class PartyController{
     
       async update(req, res, next) {
         try {
-          const partyData = await partyService.update(req.body,await req.user);
+          const {id}=req.params
+          const partyData = await partyService.update(req.body,id,await req.user);
           successResponse(res, 200, partyData, "Party updated");
         } catch (err) {
           next(err);
@@ -25,7 +26,7 @@ class PartyController{
     
       async findAll(req, res, next) {
         try {
-          const partyData = await partyService.findAll();
+          const partyData = await partyService.findAll(req.user);
           successResponse(res, 200, partyData, "Party fetched");
         } catch (err) {
           console.log(err)
@@ -36,7 +37,7 @@ class PartyController{
       async findById(req, res, next) {
         const { id } = req.params;
         try {
-          const partyData = await partyService.findById(id);
+          const partyData = await partyService.findById(id,req.user);
           successResponse(res, 200, partyData, "Party fetched");
         } catch (err) {
           next(err);

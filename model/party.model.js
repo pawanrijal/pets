@@ -15,7 +15,6 @@ module.exports = (sequelize, type) => {
             },
             email: {
                 type: type.STRING,
-                unique: true,
                 allowNull: false,
             },
             contact_no: {
@@ -25,9 +24,6 @@ module.exports = (sequelize, type) => {
             },
         },
         {
-            defaultScope: {
-                attributes: { exclude: ["createdAt", "updatedAt"] },
-            },
             timestamps: true
         }
     );
