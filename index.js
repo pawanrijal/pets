@@ -18,8 +18,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 initRoutes(app);
 require("./utils/passportConfig")(passport);
 
-
-
 //sequelize authentication to database
 sequelize
   .authenticate()

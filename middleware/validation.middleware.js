@@ -1,7 +1,7 @@
 const validator = (schema) => {
   return (req, res, next) => {
     const { error, value } = schema.validate(req.body);
-    if (error) {
+    if (error||(error===undefined && value===undefined)) {
       error.status=400;
       next(error)
     } else {

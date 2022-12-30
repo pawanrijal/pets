@@ -18,11 +18,20 @@ module.exports = (sequelize, type) => {
       },
       profile_pic: {
         type: type.STRING,
+        allowNull: true
       },
       email: {
         type: type.STRING,
         unique: true,
         allowNull: false,
+      },
+      resetPasswordToken: {
+        type: type.STRING,
+        allowNull: true,
+      },
+      resetPasswordExpires: {
+        type: type.DATE,
+        allowNull: true,
       }
     },
     {

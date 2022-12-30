@@ -52,6 +52,16 @@ class UserController {
       next(err)
     }
   }
+
+  async forgotPassword(req,res,next){
+    try {
+      const response = await UserService.forgotPassword( req.headers.host,req.body)
+      successResponse(res, 200, response, "Reset Email");
+    }
+    catch (err) {
+      next(err)
+    }
+  }
 }
 
 

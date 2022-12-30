@@ -3,14 +3,14 @@ require("dotenv").config();
 
 const KEY = process.env.JSON_WEB_TOKEN_SECRET
 
-const generateToken = ({ id }) => {
+const generateToken = ({ id },expiresIn) => {
     try {
         let token = jwt.sign(
             {
                 sub: id,
             },
             KEY,
-            { expiresIn: 604800 }
+            { expiresIn: expiresIn }
         );
         return token;
     } catch (err) {

@@ -42,4 +42,4 @@ class PartyService {
     }
 }
 
-module.exports = new PartyService();
+module.exports = new PartyService;
