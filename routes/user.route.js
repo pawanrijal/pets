@@ -9,5 +9,5 @@ module.exports = (app) => {
   app.route("/api/user").put(authenticator, UserController.update);
   app.route("/api/user").get(authenticator, UserController.profile);
   app.route("/api/login").post(validator(loginSchema), UserController.login);
- 
+  app.route("/api/reset/:token".post(validator(resetSchema), UserController.reset));
 };

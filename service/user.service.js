@@ -6,6 +6,7 @@ const { notFoundException } = require("../exceptions/notFound.exception")
 
 const generateToken = require("../utils/tokenGenerator");
 const { SendMail } = require("../utils/sendMail");
+const { TokenExpiredError } = require("jsonwebtoken");
 class UserService {
   async create(payload) {
     let userData = await user.findOne({ where: { username: payload.username } });//fetch user
@@ -101,8 +102,25 @@ class UserService {
     return true;
   }
 
-  async reset(token){
-    //
+  async reset(payload) {
+    try {
+      const user = await user.findOne({ where: { resetPasswordToken: payload.token, resetPasswordExpires: { $gt: Date.now() } } });
+      if (!user) {
+        throw new TokenExpiredError();
+      }
+      user.password = req.body.password;
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+      user.save();
+      const html = `Hi ${user.username} \n 
+      This is a confirmation that the password for your account ${user.email} has just been changed.\n`;
+      const sendEmail = new SendMail(user.email, "Password Reset Email", html);
+      sendEmail.send();
+      return true;
+    }
+    catch (err) {
+      throw err;
+    }
   }
 }
 

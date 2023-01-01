@@ -36,8 +36,8 @@ class UserController {
 
   async profile(req, res, next) {
     try {
-      const user=req.user;
-      user.password=undefined;
+      const user = req.user;
+      user.password = undefined;
       successResponse(res, 200, user, "User Profile");
     } catch (err) {
       next(err);
@@ -53,10 +53,21 @@ class UserController {
     }
   }
 
-  async forgotPassword(req,res,next){
+  async forgotPassword(req, res, next) {
     try {
-      const response = await UserService.forgotPassword( req.headers.host,req.body)
+      const response = await UserService.forgotPassword(req.headers.host, req.body)
       successResponse(res, 200, response, "Reset Email");
+    }
+    catch (err) {
+      next(err)
+    }
+  }
+
+
+  async reset(req, res, next) {
+    try {
+      const response = await UserService.reset(req.body);
+      successResponse(res, 200, response, "Password changed");
     }
     catch (err) {
       next(err)
