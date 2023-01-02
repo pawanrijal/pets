@@ -25,6 +25,10 @@ const updateSchema = Joi.object({
 
 const forgotPasswordSchema = Joi.object({
   email: Joi.string().required().email({ tlds: { allow: false } }).messages({ "any.required": "Email is required" })
+});
+
+const resetSchema=Joi.object({
+  token: Joi.string().required().messages({ "any.required": "Token is required"})
 })
 
-module.exports = { signupSchema, loginSchema, updateSchema, forgotPasswordSchema };
+module.exports = { signupSchema, loginSchema, updateSchema, forgotPasswordSchema,resetSchema };

@@ -1,10 +1,10 @@
-const { category } = require("../json/transaction.categories.json");
+const { category } = require("../lib/database.connection");
 
 class CategoryService {
 
     async findAll() {
-        console.log(category);
-        return category;
+        const returnData = await category.findAll();
+        return returnData;
     }
 
     async findById(id) {
