@@ -26,7 +26,7 @@ class IncomeController {
     async findById(req, res, next) {
         const  id  = req.params.id;
         try {
-            const incomeData = await incomeService.findById(id);
+            const incomeData = await incomeService.findById(id,req.user);
             if (incomeData === null) {
                 throw new notFoundException("income")
             }
@@ -40,7 +40,7 @@ class IncomeController {
     async update(req, res, next) {
         const { id } = req.params;
         try {
-            const incomeData = await incomeService.update(id);
+            const incomeData = await incomeService.update(req.body,id,req.user);
             successResponse(res, 200, incomeData, "Income updated");
         } catch (err) {
             next(err);
@@ -50,7 +50,7 @@ class IncomeController {
     async delete(req, res, next) {
         const { id } = req.params;
         try {
-            const incomeData = await incomeService.delete(id);
+            const incomeData = await incomeService.delete(id,req.user);
             successResponse(res, 200, incomeData, "Income deleted");
         } catch (err) {
             next(err);

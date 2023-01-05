@@ -1,5 +1,6 @@
 const { income, user } = require("../lib/database.connection");
-const { alreadyExistsException } = require("../exceptions/alreadyExists.exception")
+const { alreadyExistsException } = require("../exceptions/alreadyExists.exception");
+const { notFoundException } = require("../exceptions/notFound.exception");
 
 class incomeService {
     async create(payload, user) {
@@ -8,7 +9,10 @@ class incomeService {
         return data;
     }
     async update(payload, id, user) {
-        this.findById(id, user);
+        const incomeData=await this.findById(id, user);
+        if(incomeData==null){
+            throw new notFoundException("Income");
+        }
         const returnData = await income.update(payload, {
             where: { id },
             attributes: { exclude: ["createdAt", "updatedAt"] },
