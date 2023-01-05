@@ -2,26 +2,29 @@
 
 module.exports = (sequelize, type) => {
     return sequelize.define(
-        "parties",
+        "incomes",
         {
             id: {
                 type: type.INTEGER,
                 autoIncrement: true,
                 primaryKey: true,
             },
-            name: {
+            amount: {
+                type: type.DOUBLE,
+                allowNull: false,
+            },
+            paymentMethod: {
                 type: type.STRING,
                 allowNull: false,
             },
-            email: {
-                type: type.STRING,
-                allowNull: false,
+            note: {
+                type: type.TEXT,
+                allowNull: true,
             },
-            contactNo: {
-                type: type.STRING,
-                unique: true,
-                allowNull: false,
-            },
+            date:{
+                type:type.DATE,
+                allowNull:false
+            }
         },
         {
             timestamps: true

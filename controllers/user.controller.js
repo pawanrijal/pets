@@ -7,6 +7,11 @@ require("dotenv").config();
 class UserController {
   async signup(req, res, next) {
     try {
+      if (req.file) {
+        const host = req.host;
+        const filePath = req.protocol + "://" + host + '/' + req.file.path;
+        req.body.profle_pic = filePath;
+      }
       const user = await UserService.create(req.body);
       successResponse(res, 200, user, "User Created");
     } catch (err) {

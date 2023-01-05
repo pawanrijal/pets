@@ -47,10 +47,17 @@ module.exports = {
         updated_at: new Date()
       },
       {
-        "id": 7,
+        "id": 8,
         "title": "Food",
         created_at: new Date(),
         updated_at: new Date()
+      },
+      {
+        "id": 9,
+        "title": "Others",
+        created_at: new Date(),
+        updated_at: new Date()
+
       }
     ]);
   },

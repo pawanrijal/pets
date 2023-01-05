@@ -1,22 +1,24 @@
 const express = require("express");
-
-
 const app = express();
 const cors = require("cors")
 const morgan = require("morgan");
-app.use(cors());
-app.use(morgan("dev"));
 const { sequelize } = require("./lib/database.connection");
 const HttpException = require("./exceptions/http.exception");
-const { initRoutes } = require("./routes/index");
-const bodyParser = require("body-parser");
+var multer = require('multer');
+var forms = multer();
+
+var bodyParser = require("body-parser");
 const passport = require("passport");
-
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-initRoutes(app);
 require("./utils/passportConfig")(passport);
+app.use(cors());
+app.use(morgan("dev"));
+app.use(bodyParser.json());
+app.use(forms.array());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(`${__dirname}/public`));
+
+const { initRoutes } = require("./routes/index");
+initRoutes(app);
 
 //sequelize authentication to database
 sequelize

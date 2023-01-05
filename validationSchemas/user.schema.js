@@ -5,7 +5,7 @@ const signupSchema = Joi.object({
   username: Joi.string().required().messages({ "any.required": "Username is required", "string.base": "Username should be string" }),
   password: Joi.string().min(8).required().messages({ "any.required": "Password is required", "string.min": `Password should be of minimum {#limit}` }),
   confirm_password: Joi.string().min(8).required().messages({ "any.required": "Password is required", "string.min": `Password should be of minimum {#limit}` }),
-  // profile_pic: Joi.string().messages({'string.base': `"profile_pic" should be a type of 'text'`}),
+  profile_pic: Joi.allow(),
   email: Joi.string().email({ tlds: { allow: false } }).required().messages({ "any.required": "Email is required" }),
 });
 

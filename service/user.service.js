@@ -11,7 +11,6 @@ class UserService {
   async create(payload) {
     let userData = await user.findOne({ where: { username: payload.username } });//fetch user
     let userDataEmail = await user.findOne({ where: { email: payload.email } });//fetch user email
-
     if (userData == null && userDataEmail == null) {
       if (payload.password == payload.confirm_password) {
         const saltRounds = 10;//password hash

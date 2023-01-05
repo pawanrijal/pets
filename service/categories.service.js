@@ -2,7 +2,7 @@ const { category } = require("../lib/database.connection");
 
 class CategoryService {
 
-    async findAll() {
+    async findAll(user) {
         const returnData = await category.findAll();
         return returnData;
     }
