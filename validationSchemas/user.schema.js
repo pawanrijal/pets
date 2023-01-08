@@ -3,15 +3,15 @@ const Joi = require("joi");
 const signupSchema = Joi.object({
 
   username: Joi.string().required().messages({ "any.required": "Username is required", "string.base": "Username should be string" }),
-  password: Joi.string().min(8).required().messages({ "any.required": "Password is required", "string.min": `Password should be of minimum {#limit}` }),
-  confirm_password: Joi.string().min(8).required().messages({ "any.required": "Password is required", "string.min": `Password should be of minimum {#limit}` }),
+  password: Joi.string().min(8).required().messages({ "any.required": "Password is required", "string.min": `Password should be of minimum {#limit} digits` }),
+  confirm_password: Joi.string().min(8).required().messages({ "any.required": "Password is required", "string.min": `Password should be of minimum {#limit} digits` }),
   profile_pic: Joi.allow(),
   email: Joi.string().email({ tlds: { allow: false } }).required().messages({ "any.required": "Email is required" }),
 });
 
 const loginSchema = Joi.object({
   username: Joi.string().required().messages({ "any.required": "Username is required", "string.base": "Username should be string" }),
-  password: Joi.string().min(8).required().messages({ "any.required": "Password is required", "string.min": `Password should be of minimum {#limit}` }),
+  password: Joi.string().min(8).required().messages({ "any.required": "Password is required", "string.min": `Password should be of minimum {#limit} digits` }),
 });
 
 const updateSchema = Joi.object({

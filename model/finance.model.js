@@ -2,7 +2,7 @@
 
 module.exports = (sequelize, type) => {
     return sequelize.define(
-        "incomes",
+        "finances",
         {
             id: {
                 type: type.INTEGER,
@@ -24,6 +24,10 @@ module.exports = (sequelize, type) => {
             date:{
                 type:type.DATE,
                 allowNull:false
+            },
+            type:{
+                type:type.STRING,
+                allowNull:false,
             }
         },
         {

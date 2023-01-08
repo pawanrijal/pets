@@ -9,12 +9,10 @@ class PartyService {
             let data = await party.create(payload)
             return data;
         }
-        else {
-            throw new alreadyExistsException("Party with this contact");
-        }
+        throw new alreadyExistsException("Party with this contact");
     }
     async update(payload,id, user) {
-        this.findById(id,user);
+        await this.findById(id,user);
         const returnData = await party.update(payload, {
             where: {id},
             attributes: { exclude: ["createdAt", "updatedAt"] },
@@ -28,11 +26,12 @@ class PartyService {
     }
 
     async findById(id, user) {
-        const partyData = await party.findOne({ where: { "userId": user.id } });
-        if (user.id !== parseInt(partyData.userId)) {
+        const partyData = await party.findOne({ where: { id } });
+        if (partyData === null || partyData === undefined)
+            throw new notFoundException("Party");
+        const returnData = await party.findOne({ where: { "userId": user.id } });
+        if (user.id !== parseInt(partyData.userId)) 
             throw new Error("Unauthorized");
-        }
-        const returnData = await party.findOne({ where: { id } });
         return returnData;
     }
     async delete(id, user) {
