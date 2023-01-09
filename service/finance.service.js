@@ -1,5 +1,4 @@
 const { finance, user } = require("../lib/database.connection");
-const { alreadyExistsException } = require("../exceptions/alreadyExists.exception");
 const { notFoundException } = require("../exceptions/notFound.exception");
 
 class FinanceService {
@@ -8,11 +7,9 @@ class FinanceService {
         let data = await finance.create(payload)
         return data;
     }
+    
     async update(payload, id, user) {
         await this.findById(id, user);
-        // if (financeData == null) {
-        //     throw new notFoundException("Finance");
-        // }
         const returnData = await finance.update(payload, {
             where: { id },
             attributes: { exclude: ["createdAt", "updatedAt"] },
@@ -34,6 +31,7 @@ class FinanceService {
             throw new Error("Unauthorized");
         return returnData;
     }
+
     async delete(id, user) {
         await this.findById(id, user);
         const returnData = await finance.destroy({ where: { id } });

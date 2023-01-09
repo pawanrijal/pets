@@ -3,7 +3,7 @@ const { alreadyExistsException } = require("../exceptions/alreadyExists.exceptio
 
 class PartyService {
     async create(payload, user) {
-        let partyData = await party.findOne({ where: { contact_no: payload.contact_no } });
+        let partyData = await party.findOne({ where: { contactNo: payload.contactNo } });
         payload.userId = user.id;
         if (partyData === null) {
             let data = await party.create(payload)

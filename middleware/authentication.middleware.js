@@ -1,6 +1,6 @@
 
 const jwt = require("jsonwebtoken");
-const UserService = require("../service/user.service");
+const {user}=require("../lib/database.connection")
 const { tokenExpiredException } = require("../exceptions/tokenExpired.exception");
 
 const AuthenticationException = require("../exceptions/authentication.exception");
@@ -19,8 +19,11 @@ const authenticationMiddleware = async (req, res, next) => {
         if (decoded.exp * 1000 < Date.now()) {
             throw new tokenExpiredException()
         }
-        const user = await UserService.findById(decoded.sub);
-        req.user = user;
+        const _user = await user.findByPk(decoded.sub);
+        if(_user===null || _user===undefined){
+            throw new AuthenticationException();
+        }
+        req.user = _user;
         // `user` is authorized pass the control to next middleware
         next();
     }
