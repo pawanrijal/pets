@@ -17,7 +17,7 @@ module.exports = (sequelize, type) => {
         allowNull: false,
       },
       profilePic: {
-        type: type.STRING,
+        type: type.TEXT,
         allowNull: true
       },
       email: {

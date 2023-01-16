@@ -22,6 +22,9 @@ class UserController {
 
   async update(req, res, next) {
     try {
+      if (req.file) {
+        req.body.profilePic = req.file.path;
+      }
       const userData = await UserService.update(req.body, req.user);
       successResponse(res, 200, userData, "User updated");
     } catch (err) {

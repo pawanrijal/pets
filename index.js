@@ -4,20 +4,15 @@ const cors = require("cors")
 const morgan = require("morgan");
 const { sequelize } = require("./lib/database.connection");
 const HttpException = require("./exceptions/http.exception");
-var multer = require('multer');
-var forms = multer();
-
-var bodyParser = require("body-parser");
+const { initRoutes } = require("./routes/index");
 const passport = require("passport");
 require("./utils/passportConfig")(passport);
 app.use(cors());
 app.use(morgan("dev"));
-app.use(bodyParser.json());
-app.use(forms.array());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(`${__dirname}/public`));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-const { initRoutes } = require("./routes/index");
+
 initRoutes(app);
 
 //sequelize authentication to database

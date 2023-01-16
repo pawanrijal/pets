@@ -1,16 +1,28 @@
-const multer = require("multer");
-const fs = require("fs");
+const multer=require("multer");
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const path = "./uploads";
-    fs.mkdirSync(path, { recursive: true });
-    cb(null, path);
+  destination: function(req, file, cb) {
+    cb(null, './uploads/');
   },
-  fileName: (res, file, cb) => {
-    cb(null, file.originalname);
-  },
+  filename: function(req, file, cb) {
+    cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
+  }
 });
 
-exports.upload = multer({ storage: storage });
+const fileFilter = (req, file, cb) => {
+  // reject a file
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+exports.upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  },
+  fileFilter: fileFilter
+});
 

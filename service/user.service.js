@@ -12,7 +12,7 @@ class UserService {
     let userData = await user.findOne({ where: { username: payload.username } });//fetch user
     let userDataEmail = await user.findOne({ where: { email: payload.email } });//fetch user email
     if (userData == null && userDataEmail == null) {
-      if (payload.password == payload.confirm_password) {
+      if (payload.password == payload.confirmPassword) {
         const saltRounds = 10;//password hash
         const { password } = payload;
         const salt = await bcrypt.genSalt(saltRounds);
@@ -31,17 +31,17 @@ class UserService {
     }
   }
 
-  async update(payload, user) {
+  async update(payload, _user) {
     if (payload.password) {
       if (payload.oldPassword) {
         const saltRounds = 10;
-        const compare = await bcrypt.compare(payload.oldPassword, user.password);//compare user password with payload password
+        const compare = await bcrypt.compare(payload.oldPassword, _user.password);//compare user password with payload password
         if (compare) {
           const salt = await bcrypt.genSalt(saltRounds)
           const hash = await bcrypt.hash(payload.password, salt)
           payload.password = hash;
           const returnData = await user.update(payload, {
-            where: { id: user.id },
+            where: { id: _user.id },
           });
           return returnData;
         }
@@ -54,7 +54,7 @@ class UserService {
     }
     else {
       return await user.update(payload, {
-        where: { id: user.id },
+        where: { id: _user.id },
       });
     }
   }
