@@ -1,4 +1,4 @@
-const { finance, user } = require("../lib/database.connection");
+const { finance, user,sequelize } = require("../lib/database.connection");
 const { notFoundException } = require("../exceptions/notFound.exception");
 
 class FinanceService {
@@ -36,6 +36,12 @@ class FinanceService {
         await this.findById(id, user);
         const returnData = await finance.destroy({ where: { id } });
         return returnData;
+    }
+
+    async getTotalAmountOfDate(payload){
+        const {date,type}=payload;
+        const total=await finance.findOne({attributes:[[sequelize.fn('sum', sequelize.col('amount')), 'total']],where:{type:type,date:date}});
+        return total.dataValues;
     }
 }
 
