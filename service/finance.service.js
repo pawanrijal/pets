@@ -38,9 +38,9 @@ class FinanceService {
         return returnData;
     }
 
-    async getTotalAmountOfDate(payload){
+     async getTotalAmountOfDate(payload){
         const {date,type}=payload;
-        const total=await finance.findOne({attributes:[[sequelize.fn('sum', sequelize.col('amount')), 'total']],where:{type:type,date:date}});
+        const total= await finance.findOne({attributes:[[sequelize.fn('sum', sequelize.col('amount')), 'total']],where:{type:type,date:date}});
         return total.dataValues;
     }
 }

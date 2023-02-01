@@ -1,23 +1,21 @@
-const { finance, user } = require("../lib/database.connection");
-const financeService = require("../service/finance.service");
+
+
 const successResponse = require("../utils/successResponse");
+const { runQueries } = require("../utils/query");
 class ChartController {
     async chart(req, res, next) {
         const { type } = req.query;
-        const financeData = await finance.findAll({ where: { type: type, userId: req.user.id } });
-        const returnData = [];
-        financeData.map(async (data) => {
-            const currentAmount = await financeService.getTotalAmountOfDate({ date: "2022-03-03T00:00:00.000Z", type: "income" });
-            console.log(returnData.filter(value => value == { "date": data.date }).length > 0)
-            if (returnData.filter(value => value == { "date": data.date }).length > 0) {
-                returnData.push({ "date": data.date, "current": currentAmount.total });
-            }
-        });
-        const { total } = await financeService.getTotalAmountOfDate({ date: "2022-03-03T00:00:00.000Z", type: "income" });
-        successResponse(res, 200, returnData, "Finance fetched");
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const datesArray = Array.from({ length: daysInMonth }, (_, i) => new Date(year, month, i + 1));
+        const data = [];
+        await Promise.all(datesArray.map(async (date) => {
+            data.push(await runQueries(date, type))
+        }));
+        successResponse(res, 200, data, "Finance fetched");
     }
 }
-
-
 
 module.exports = new ChartController;
