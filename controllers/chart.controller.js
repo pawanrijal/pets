@@ -14,7 +14,7 @@ class ChartController {
         await Promise.all(datesArray.map(async (date) => {
             data.push(await runQueries(date, type))
         }));
-        successResponse(res, 200, data, "Finance fetched");
+        successResponse(res, 200, data, "Chart data fetched");
     }
 }
 

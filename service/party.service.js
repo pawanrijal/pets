@@ -1,5 +1,6 @@
 const { party } = require("../lib/database.connection");
-const { alreadyExistsException } = require("../exceptions/alreadyExists.exception")
+const { alreadyExistsException } = require("../exceptions/alreadyExists.exception");
+const { notFoundException } = require("../exceptions/notFound.exception");
 
 class PartyService {
     async create(payload, user) {

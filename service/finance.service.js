@@ -18,7 +18,7 @@ class FinanceService {
     }
 
     async findAll() {
-        const returnData = await finance.findAll({ include: user });
+        const returnData = await finance.findAll({ where: { userId: user.id } });
         return returnData;
     }
 

@@ -1,38 +1,24 @@
-
-
 module.exports = (sequelize, type) => {
     return sequelize.define(
-        "transactions",
+        "goals",
         {
             id: {
                 type: type.INTEGER,
                 autoIncrement: true,
                 primaryKey: true,
             },
-            paymentMethod: {
+            name: {
                 type: type.STRING,
                 allowNull: false,
             },
-            amount: {
+            targetAmount: {
                 type: type.DOUBLE,
                 allowNull: false,
+                default: 0
             },
-            date: {
-                type: type.STRING,
-                allowNull: false
-            },
-            type: {
-                type: type.STRING,
-                allowNull: false,
-            },
-            note: {
+            description: {
                 type: type.TEXT,
-                allowNull: true,
-            },
-            image: {
-                type: type.STRING,
-                allowNull: true,
-
+                allowNull: false,
             }
         },
         {

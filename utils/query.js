@@ -8,11 +8,10 @@ const runQueries = async (date, type) => {
     const currentAmount = await financeService.getTotalAmountOfDate({ date: getDateOnly(date), type: type });
     const previousMonthDate = new Date(date.getFullYear(), date.getMonth() - 1, date.getDate());
     const previousAmount = await financeService.getTotalAmountOfDate({ date: getDateOnly(previousMonthDate), type: type });
-    console.log(currentAmount,previousAmount);
     return {
         "label": date,
         "current": currentAmount.total === null ? 0 : currentAmount.total,
         "previous": previousAmount.total === null ? 0 : previousAmount.total
     };
 }
-module.exports = {runQueries };
+module.exports = {runQueries,getDateOnly };

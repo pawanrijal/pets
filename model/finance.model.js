@@ -22,7 +22,7 @@ module.exports = (sequelize, type) => {
                 allowNull: true,
             },
             date:{
-                type:type.DATE,
+                type:type.STRING,
                 allowNull:false
             },
             type:{
