@@ -20,7 +20,7 @@ initRoutes(app);
 sequelize
   .authenticate()
   .then(() => {
-    // sequelize.sync({ force: true });
+    // sequelize.sync({ alter: true });
     console.log("Database connected successfully")
   })
   .catch((err) => {

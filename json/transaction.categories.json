@@ -16,33 +16,15 @@
         },
         {
             "id": 2,
-            "name": "Loans and advances",
+            "name": "Income",
             "sub_categories": [
                 {
                     "id": 1,
-                    "title": "Loans/Advances given"
+                    "title": "Salary"
                 },
                 {
                     "id": 2,
-                    "title": "Repayment of loans/advances"
-                }
-            ]
-        },
-        {
-            "id": 3,
-            "name": "Bank Saving Investments",
-            "sub_categories": [
-                {
-                    "id": 1,
-                    "title": "Deposit to bank account"
-                },
-                {
-                    "id": 2,
-                    "title": "Real Estate Investment"
-                },
-                {
-                    "id": 3,
-                    "title": "Vehicle and Machineries"
+                    "title": "Investment"
                 }
             ]
         }

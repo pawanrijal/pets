@@ -1,4 +1,4 @@
-const { transaction, user } = require("../lib/database.connection");
+const { transaction, user, finance } = require("../lib/database.connection");
 const { notFoundException } = require("../exceptions/notFound.exception");
 const { Sequelize } = require("sequelize");
 const partyService = require("../service/party.service");
@@ -61,10 +61,10 @@ class TransactionService {
             query.partyId = payload.partyId;
             await partyService.findById(payload.partyId, user);
         }
-        const amount = await transaction.sum('amount', {
+        const amount = await finance.sum('amount', {
             where: query
         });
-        return { "amount": amount ?? 0 };;
+        return { "amount": amount ?? 0 };
     }
 }
 

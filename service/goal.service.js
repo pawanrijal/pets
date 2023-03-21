@@ -1,5 +1,7 @@
-const { goal, user } = require("../lib/database.connection");
+const { goal, finance } = require("../lib/database.connection");
 const { notFoundException } = require("../exceptions/notFound.exception");
+const financeService = require("../service/finance.service");
+const transactionService = require("./transaction.service");
 
 class GoalService {
     async create(payload, user) {
@@ -7,7 +9,7 @@ class GoalService {
         const returnData = await goal.create(payload)
         return returnData;
     }
-    
+
     async update(payload, id, user) {
         await this.findById(id, user);
         const returnData = await goal.update(payload, {
@@ -17,7 +19,7 @@ class GoalService {
         return returnData;
     }
 
-    async findAll() {
+    async findAll(user) {
         const returnData = await goal.findAll({ where: { userId: user.id } });
         return returnData;
     }
@@ -27,7 +29,7 @@ class GoalService {
         if (goalData === null || goalData === undefined)
             throw new notFoundException("goal");
         const returnData = await goal.findOne({ where: { "userId": user.id } });
-        if (user.id !== parseInt(goalData.userId)) 
+        if (user.id !== parseInt(goalData.userId))
             throw new Error("Unauthorized");
         return returnData;
     }
@@ -37,6 +39,28 @@ class GoalService {
         const returnData = await goal.destroy({ where: { id } });
         return returnData;
     }
+
+    // async isApproachingLimit(payload, user) {
+    //     const goalData = await this.findById(payload.goalId, user);
+    //     if (goalData === null || goalData === undefined) {
+    //         return false;
+    //     }
+    //     const now = new Date();
+    //     const month = now.getMonth() + 1;
+    //     payload.month = month;
+    //     payload.type = "expense";
+    //     const totalAmount = await financeService.amount(payload, user);
+    //     const data = {};
+    //     if (totalAmount.amount > (goalData.targetAmount * 0.75)) {
+    //         data.isApproaching = true;
+    //     }
+    //     if (
+    //         totalAmount.amount >= goalData.targetAmount
+    //     ) {
+    //         data.approached = true;
+    //     }
+    //     return data;
+    // }
 }
 
 module.exports = new GoalService;

@@ -58,6 +58,13 @@ module.exports = {
         created_at: new Date(),
         updated_at: new Date()
 
+      },
+      {
+        "id": 10,
+        "title": "All",
+        created_at: new Date(),
+        updated_at: new Date()
+
       }
     ]);
   },

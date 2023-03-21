@@ -4,6 +4,8 @@ const CategoryRoute = require("./category.route");
 const FinanceRoute=require("./finance.route");
 const TransactionRoute=require("./transaction.route");
 const ChartRoute=require("./chart.route");
+const GoalRoute=require("./goal.route");
+const NotificationRoute=require("./notification.route");
 
 exports.initRoutes = (app) => {
   UserRoute(app);
@@ -12,4 +14,6 @@ exports.initRoutes = (app) => {
   FinanceRoute(app);
   TransactionRoute(app);
   ChartRoute(app);
+  GoalRoute(app);
+  NotificationRoute(app);
 };
