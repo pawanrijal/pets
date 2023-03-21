@@ -11,20 +11,17 @@ class FinanceService {
             payload.userId = _user.id;
             _user = await user.findOne({ where: _user.id, include: goal });
             if (_user.goals.length > 0) {
-                const goalData = _user.goals;
-                const notifications = [];
-                goalData.forEach(async (element) => {
+                _user.goals.forEach(async (element) => {
                     payload.goalId = element.id;
                     const limit = await this.isApproachingLimit(payload, _user);
                     if (limit !== undefined || limit !== null) {
-                        let type = null;
-                        if (limit.isApproaching) {
-                            type = `Goal Target is approaching for goal ${element.id}`;
-                            notifications.push(await notification.create({ type: type, data: JSON.stringify(goalData), userId: _user.id, readAt: null }));
+                        if (!limit.approached && limit.isApproaching) {
+                            let type = `Goal Target is approaching for goal ${element.id}`;
+                            await notification.create({ type: type, data: JSON.stringify(_user.goals), userId: _user.id, readAt: null });
                         }
                         if (limit.approached) {
-                            type = `Goal Target is meet for goal ${element.id}`;
-                            notifications.push(await notification.create({ type: type, data: JSON.stringify(goalData), userId: _user.id, readAt: null }));
+                            let type = `Goal Target is meet for goal ${element.id}`;
+                            await notification.create({ type: type, data: JSON.stringify(_user.goals), userId: _user.id, readAt: null });
                         }
                     }
                 })

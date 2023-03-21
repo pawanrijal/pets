@@ -1,7 +1,5 @@
 const { goal, finance } = require("../lib/database.connection");
 const { notFoundException } = require("../exceptions/notFound.exception");
-const financeService = require("../service/finance.service");
-const transactionService = require("./transaction.service");
 
 class GoalService {
     async create(payload, user) {
@@ -39,28 +37,6 @@ class GoalService {
         const returnData = await goal.destroy({ where: { id } });
         return returnData;
     }
-
-    // async isApproachingLimit(payload, user) {
-    //     const goalData = await this.findById(payload.goalId, user);
-    //     if (goalData === null || goalData === undefined) {
-    //         return false;
-    //     }
-    //     const now = new Date();
-    //     const month = now.getMonth() + 1;
-    //     payload.month = month;
-    //     payload.type = "expense";
-    //     const totalAmount = await financeService.amount(payload, user);
-    //     const data = {};
-    //     if (totalAmount.amount > (goalData.targetAmount * 0.75)) {
-    //         data.isApproaching = true;
-    //     }
-    //     if (
-    //         totalAmount.amount >= goalData.targetAmount
-    //     ) {
-    //         data.approached = true;
-    //     }
-    //     return data;
-    // }
 }
 
 module.exports = new GoalService;
