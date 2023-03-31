@@ -1,5 +1,5 @@
 const UserController = require("../controllers/user.controller");
-const { signupSchema, loginSchema, forgotPasswordSchema, resetSchema } = require("../validationSchemas/user.schema");
+const { signupSchema, loginSchema, forgotPasswordSchema, resetSchema, tokenSchema } = require("../validationSchemas/user.schema");
 const authenticator = require("../middleware/authentication.middleware");
 const validator = require("../middleware/validation.middleware");
 const {upload}=require("../middleware/upload.middleware");
@@ -10,5 +10,6 @@ module.exports = (app) => {
   app.route("/api/user").put(authenticator,upload.single('profilePic'), UserController.update);
   app.route("/api/user").get(authenticator, UserController.profile);
   app.route("/api/login").post(validator(loginSchema), UserController.login);
-  app.route("/api/reset/:token").post(validator(resetSchema), UserController.reset);
+  app.route("/api/verify/:id/:token").get( UserController.verifyToken);
+  app.route("/api/reset/:id/:token").post(validator(resetSchema), UserController.resetPassword);
 };

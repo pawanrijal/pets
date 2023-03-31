@@ -6,7 +6,7 @@ const { notFoundException } = require("../exceptions/notFound.exception")
 
 const generateToken = require("../utils/tokenGenerator");
 const { SendMail } = require("../utils/sendMail");
-const { TokenExpiredError } = require("jsonwebtoken");
+const { tokenExpiredException } = require("../exceptions/tokenExpired.exception");
 class UserService {
   async create(payload) {
     let userData = await user.findOne({ where: { username: payload.username } });//fetch user
@@ -92,7 +92,7 @@ class UserService {
     _user.resetPasswordToken = generateToken(user, 68400);
     _user.resetPasswordExpires = Date.now() + 3600000; // expires in an hour
     await _user.save();
-    const link = `http://${host}/api/auth/reset/${_user.resetPasswordToken}`;
+    const link = `http://${host}/api/verify/${_user.id}/${_user.resetPasswordToken}`;
     const html = `Hi ${_user.username} \n
       Please click on the following link <a href="${link}">${link}</a> to reset your password. \n\n
       If you did not request this, please ignore this email and your password will remain unchanged.\n`;
@@ -101,25 +101,49 @@ class UserService {
     return true;
   }
 
-  async reset(payload) {
+
+  //verify url
+  async verifyToken(payload, id) {
     try {
-      const user = await user.findOne({ where: { resetPasswordToken: payload.token, resetPasswordExpires: { $gt: Date.now() } } });
-      if (!user) {
-        throw new TokenExpiredError();
+      const _user = await user.findOne({ where: { resetPasswordToken: payload.token, id: id } });
+      if (await this.checkExpiryDate(_user)) {
+        throw new tokenExpiredException();
       }
-      user.password = req.body.password;
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpires = undefined;
-      user.save();
-      const html = `Hi ${user.username} \n 
-      This is a confirmation that the password for your account ${user.email} has just been changed.\n`;
-      const sendEmail = new SendMail(user.email, "Password Reset Email", html);
-      sendEmail.send();
       return true;
     }
     catch (err) {
       throw err;
     }
+  }
+
+  //reset password
+  async resetPassword(payload, id) {
+    const _user = await user.findOne({ where: { resetPasswordToken: payload.token, id: id } });
+    if (await this.checkExpiryDate(_user)) {
+      throw new tokenExpiredException();
+    }
+
+    const saltRounds = 10;//password hash
+    const { password } = payload;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hash = await bcrypt.hash(password, salt);
+    payload.password = hash;
+    const userData = await user.update(payload, {
+      where: { id: _user.id },
+    });
+
+    const html = `Hi ${_user.username} \n
+        Your password has been successfully reset.`;
+    const sendEmail = new SendMail(_user.email, "Password Reset Email", html);
+    sendEmail.send();
+    return true;
+  }
+
+
+  async checkExpiryDate(_user) {
+    const expiryDate = _user.resetPasswordExpires;
+    return expiryDate < new Date() ? true : false;
+
   }
 }
 

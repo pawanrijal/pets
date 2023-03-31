@@ -26,8 +26,12 @@ const forgotPasswordSchema = Joi.object({
   email: Joi.string().required().email({ tlds: { allow: false } }).messages({ "any.required": "Email is required" })
 });
 
-const resetSchema=Joi.object({
+const tokenSchema=Joi.object({
   token: Joi.string().required().messages({ "any.required": "Token is required"})
 })
 
-module.exports = { signupSchema, loginSchema, updateSchema, forgotPasswordSchema,resetSchema };
+const resetSchema=Joi.object({
+  password: Joi.string().min(8).messages({ "any.required": "Password is required", "string.min": `Password should be of minimum {#limit}` }),
+})
+
+module.exports = { signupSchema, loginSchema, updateSchema, forgotPasswordSchema,resetSchema,tokenSchema };

@@ -70,9 +70,25 @@ class UserController {
   }
 
 
-  async reset(req, res, next) {
+  async verifyToken(req, res, next) {
     try {
-      const response = await UserService.reset(req.body);
+      const id=req.params.id;
+      const token=req.params.token
+      req.body.token=token;
+      const response = await UserService.verifyToken(req.body,id);
+      successResponse(res, 200, response, "Valid Url");
+    }
+    catch (err) {
+      next(err)
+    }
+  }
+
+  async resetPassword(req,res,next){
+    try {
+      const id=req.params.id;
+      const token=req.params.token
+      req.body.token=token;
+      const response = await UserService.resetPassword(req.body,id);
       successResponse(res, 200, response, "Password changed");
     }
     catch (err) {

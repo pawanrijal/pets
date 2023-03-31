@@ -5,36 +5,75 @@ const HttpException = require("../exceptions/http.exception");
 const { Sequelize } = require("sequelize");
 
 class FinanceService {
-    async create(payload, _user) {
+    // async create(payload, _user) {
+    //     const t = await sequelize.transaction();
+    //     try {
+    //         payload.userId = _user.id;
+    //         _user = await user.findOne({ where: _user.id, include: goal });
+    //         if (_user.goals.length > 0) {
+    //             _user.goals.forEach(async (element) => {
+    //                 payload.goalId = element.id;
+    //                 const limit = await this.isApproachingLimit(payload, _user);
+    //                 if (limit !== undefined || limit !== null) {
+    //                     if (!limit.approached && limit.isApproaching) {
+    //                         let type = `Goal Target is approaching for goal ${element.id}`;
+    //                         await notification.create({ type: type, data: JSON.stringify(_user.goals), userId: _user.id, readAt: null });
+    //                     }
+    //                     if (limit.approached) {
+    //                         let type = `Goal Target is meet for goal ${element.id}`;
+    //                         await notification.create({ type: type, data: JSON.stringify(_user.goals), userId: _user.id, readAt: null });
+    //                     }
+    //                 }
+    //             })
+    //         }
+    //         let data = await finance.create(payload);
+    //         await t.commit();
+    //         return data;
+    //     } catch (e) {
+    //         t.rollback();
+    //         console.log(e);
+    //         throw new HttpException(500, "Something Went Wrong");
+    //     }
+    // }
+
+    async createTransaction(payload, _user) {
         const t = await sequelize.transaction();
         try {
             payload.userId = _user.id;
-            _user = await user.findOne({ where: _user.id, include: goal });
-            if (_user.goals.length > 0) {
-                _user.goals.forEach(async (element) => {
-                    payload.goalId = element.id;
-                    const limit = await this.isApproachingLimit(payload, _user);
-                    if (limit !== undefined || limit !== null) {
-                        if (!limit.approached && limit.isApproaching) {
-                            let type = `Goal Target is approaching for goal ${element.id}`;
-                            await notification.create({ type: type, data: JSON.stringify(_user.goals), userId: _user.id, readAt: null });
-                        }
-                        if (limit.approached) {
-                            let type = `Goal Target is meet for goal ${element.id}`;
-                            await notification.create({ type: type, data: JSON.stringify(_user.goals), userId: _user.id, readAt: null });
-                        }
-                    }
-                })
+            const userWithGoals = await user.findOne({ where: { id: _user.id }, include: goal });
+    
+            for (const goal of userWithGoals.goals) {
+                payload.goalId = goal.id;
+                const limit = await this.isApproachingLimit(payload, userWithGoals);
+    
+                if (limit?.isApproaching && !limit?.approached) {
+                    await notification.create({
+                        type: `Goal Target is approaching for goal ${goal.id}`,
+                        data: JSON.stringify(userWithGoals.goals),
+                        userId: _user.id,
+                        readAt: null
+                    });
+                }
+    
+                if (limit?.approached) {
+                    await notification.create({
+                        type: `Goal Target is met for goal ${goal.id}`,
+                        data: JSON.stringify(userWithGoals.goals),
+                        userId: _user.id,
+                        readAt: null
+                    });
+                }
             }
-            let data = await finance.create(payload);
+            const data = await finance.create(payload);
             await t.commit();
             return data;
-        } catch (e) {
+        } catch (error) {
             t.rollback();
-            console.log(e);
-            throw new HttpException(500, "Something Went Wrong");
+            console.log(error);
+            throw new HttpException(500, "Something went wrong.");
         }
     }
+    
 
     async update(payload, id, user) {
         await this.findById(id, user);
