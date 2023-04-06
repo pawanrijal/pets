@@ -10,6 +10,5 @@ module.exports = (app) => {
   app.route("/api/user").put(authenticator,upload.single('profilePic'), UserController.update);
   app.route("/api/user").get(authenticator, UserController.profile);
   app.route("/api/login").post(validator(loginSchema), UserController.login);
-  app.route("/api/verify/:id/:token").get( UserController.verifyToken);
   app.route("/api/reset/:id/:token").post(validator(resetSchema), UserController.resetPassword);
 };
