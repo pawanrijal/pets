@@ -7,17 +7,15 @@ const { notFoundException } = require("../exceptions/notFound.exception")
 const generateToken = require("../utils/tokenGenerator");
 const { SendMail } = require("../utils/sendMail");
 const { tokenExpiredException } = require("../exceptions/tokenExpired.exception");
+const { hashPassword } = require("../utils/hashPassword");
 class UserService {
   async create(payload) {
     let userData = await user.findOne({ where: { username: payload.username } });//fetch user
     let userDataEmail = await user.findOne({ where: { email: payload.email } });//fetch user email
     if (userData == null && userDataEmail == null) {
       if (payload.password == payload.confirmPassword) {
-        const saltRounds = 10;//password hash
         const { password } = payload;
-        const salt = await bcrypt.genSalt(saltRounds);
-        const hash = await bcrypt.hash(password, salt);
-        payload.password = hash;
+        payload.password = hashPassword(password);
         const userData = await user.create(payload)//user create
         // await userRole.create({ userId: userData.id, roleId: 2 });//create role for default customer
         userData.password = undefined;
@@ -34,12 +32,10 @@ class UserService {
   async update(payload, _user) {
     if (payload.password) {
       if (payload.oldPassword) {
-        const saltRounds = 10;
         const compare = await bcrypt.compare(payload.oldPassword, _user.password);//compare user password with payload password
         if (compare) {
-          const salt = await bcrypt.genSalt(saltRounds)
-          const hash = await bcrypt.hash(payload.password, salt)
-          payload.password = hash;
+          const { password } = payload;
+          payload.password = hashPassword(password);
           const returnData = await user.update(payload, {
             where: { id: _user.id },
           });
@@ -102,33 +98,26 @@ class UserService {
   }
 
 
-  //verify url
+  //verify token
   async verifyToken(payload, id) {
-    try {
-      const _user = await user.findOne({ where: { resetPasswordToken: payload.token, id: id } });
-      if (await this.checkExpiryDate(_user)) {
-        throw new tokenExpiredException();
-      }
-      return true;
-    }
-    catch (err) {
-      throw err;
-    }
+    const _user = await user.findOne({ where: { resetPasswordToken: payload.token, id: id } });
+    if (!_user)
+      throw new notFoundException("User");
+    if (await this.checkExpiryDate(_user))
+      throw new tokenExpiredException();
+    return true;
   }
+
 
   //reset password
   async resetPassword(payload, id) {
-    const _user = await user.findOne({ where: { resetPasswordToken: payload.token, id: id } });
-    if (await this.checkExpiryDate(_user)) {
-      throw new tokenExpiredException();
-    }
+    await this.verifyToken(payload.token, id);
 
-    const saltRounds = 10;//password hash
+    const _user = await this.findById(id);
+
     const { password } = payload;
-    const salt = await bcrypt.genSalt(saltRounds);
-    const hash = await bcrypt.hash(password, salt);
-    payload.password = hash;
-    const userData = await user.update(payload, {
+    payload.password = hashPassword(password);
+    await user.update(payload, {
       where: { id: _user.id },
     });
 
