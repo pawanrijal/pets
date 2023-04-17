@@ -92,9 +92,9 @@ class UserService {
     _user.resetPasswordToken = generateToken(user, 68400);
     _user.resetPasswordExpires = Date.now() + 3600000; // expires in an hour
     await _user.save();
-    const link = `http://localhost:5173/updatePassword/${_user.id}/${_user.resetPasswordToken}`;
+    const link = `http://localhost:5173/updatePassword/${_user.id}?token=${_user.resetPasswordToken}`;
     const html = `Hi ${_user.username} \n
-      Please click on the following link <a href="${link}">${link}</a> to reset your password. \n\n
+      Please click on the following link <a href="${link}">click here</a> to reset your password. \n\n
       If you did not request this, please ignore this email and your password will remain unchanged.\n`;
     const sendEmail = new SendMail(_user.email, "Password Reset Email", html);
     sendEmail.send();

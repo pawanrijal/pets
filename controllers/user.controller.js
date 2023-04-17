@@ -32,6 +32,7 @@ class UserController {
 
   async login(req, res, next) {
     try {
+      console.log(req.body)
       const data = await UserService.login(req.body);
       successResponse(res, 200, data, "Logged in Successfully")
     } catch (err) {

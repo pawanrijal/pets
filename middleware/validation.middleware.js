@@ -1,5 +1,6 @@
 const validator = (schema) => {
   return (req, res, next) => {
+    console.log(req.body, "valid")
     const { error, value } = schema.validate(req.body);
     if (error||(error===undefined && value===undefined)) {
       error.status=400;
