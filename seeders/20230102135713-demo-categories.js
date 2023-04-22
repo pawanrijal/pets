@@ -1,71 +1,63 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('categories', [
+    return queryInterface.bulkInsert("categories", [
       {
-        "id": 1,
-        "title": "Household Items",
+        id: 1,
+        title: "Household Items",
         created_at: new Date(),
-        updated_at: new Date()
+        updated_at: new Date(),
       },
       {
-        "id": 2,
-        "title": "House repair/maintenance",
+        id: 2,
+        title: "House repair/maintenance",
         created_at: new Date(),
-        updated_at: new Date()
+        updated_at: new Date(),
       },
       {
-        "id": 3,
-        "title": "Loans/Advances given",
+        id: 3,
+        title: "Loans/Advances given",
         created_at: new Date(),
-        updated_at: new Date()
+        updated_at: new Date(),
       },
       {
-        "id": 4,
-        "title": "Repayment of loans/advances",
+        id: 4,
+        title: "Repayment of loans/advances",
         created_at: new Date(),
-        updated_at: new Date()
+        updated_at: new Date(),
       },
       {
-        "id": 5,
-        "title": "Deposit to bank account",
+        id: 5,
+        title: "Deposit to bank account",
         created_at: new Date(),
-        updated_at: new Date()
+        updated_at: new Date(),
       },
       {
-        "id": 6,
-        "title": "Real Estate Investment",
+        id: 6,
+        title: "Real Estate Investment",
         created_at: new Date(),
-        updated_at: new Date()
+        updated_at: new Date(),
       },
       {
-        "id": 7,
-        "title": "Vehicle and Machineries",
+        id: 7,
+        title: "Vehicle and Machineries",
         created_at: new Date(),
-        updated_at: new Date()
+        updated_at: new Date(),
       },
       {
-        "id": 8,
-        "title": "Food",
+        id: 8,
+        title: "Food",
         created_at: new Date(),
-        updated_at: new Date()
+        updated_at: new Date(),
       },
       {
-        "id": 9,
-        "title": "Others",
+        id: 9,
+        title: "Others",
         created_at: new Date(),
-        updated_at: new Date()
-
+        updated_at: new Date(),
       },
-      {
-        "id": 10,
-        "title": "All",
-        created_at: new Date(),
-        updated_at: new Date()
-
-      }
     ]);
   },
 
@@ -76,5 +68,5 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-  }
+  },
 };

@@ -14,8 +14,12 @@ class TransactionController {
 
   async update(req, res, next) {
     try {
-      const { id } = req.params
-      const transactionData = await transactionService.update(req.body, id, await req.user);
+      const { id } = req.params;
+      const transactionData = await transactionService.update(
+        req.body,
+        id,
+        await req.user
+      );
       successResponse(res, 200, transactionData, "Transaction updated");
     } catch (err) {
       next(err);
@@ -24,9 +28,13 @@ class TransactionController {
 
   async findAll(req, res, next) {
     try {
-      const payload={};
-      payload.partyId=req.query.partyId;
-      const transactionData = await transactionService.findAll(payload,req.user);
+      const payload = {};
+      payload.partyId = req.query.partyId;
+      payload.type = req.query.type;
+      const transactionData = await transactionService.findAll(
+        payload,
+        req.user
+      );
       successResponse(res, 200, transactionData, "Transaction fetched");
     } catch (err) {
       next(err);
@@ -45,7 +53,10 @@ class TransactionController {
 
   async delete(req, res, next) {
     try {
-      const transactionData = await transactionService.delete(req.body.transactionId, req.user);
+      const transactionData = await transactionService.delete(
+        req.body.transactionId,
+        req.user
+      );
       successResponse(res, 200, transactionData, "Transaction Deleted");
     } catch (err) {
       next(err);
@@ -54,18 +65,19 @@ class TransactionController {
 
   async amount(req, res, next) {
     try {
-      const payload={};
-      payload.month=req.query.month;
-      payload.type=req.query.type;
-      payload.partyId=req.query.partyId
-      const transactionData = await transactionService.amount(payload,req.user);
+      const payload = {};
+      payload.month = req.query.month;
+      payload.type = req.query.type;
+      payload.partyId = req.query.partyId;
+      const transactionData = await transactionService.amount(
+        payload,
+        req.user
+      );
       successResponse(res, 200, transactionData, "Transaction Data Fetched");
     } catch (err) {
       next(err);
     }
-
   }
-
 }
 
-module.exports = new TransactionController;
+module.exports = new TransactionController();
