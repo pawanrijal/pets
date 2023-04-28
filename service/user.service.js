@@ -1,20 +1,30 @@
 const { user } = require("../lib/database.connection");
 const bcrypt = require("bcrypt");
-const { passwordMismatchException } = require("../exceptions/passwordMismatch.exception")
-const { alreadyExistsException } = require("../exceptions/alreadyExists.exception")
-const { notFoundException } = require("../exceptions/notFound.exception")
+const {
+  passwordMismatchException,
+} = require("../exceptions/passwordMismatch.exception");
+const {
+  alreadyExistsException,
+} = require("../exceptions/alreadyExists.exception");
+const { notFoundException } = require("../exceptions/notFound.exception");
 
 const generateToken = require("../utils/tokenGenerator");
 const { SendMail } = require("../utils/sendMail");
-const { tokenExpiredException } = require("../exceptions/tokenExpired.exception");
+const {
+  tokenExpiredException,
+} = require("../exceptions/tokenExpired.exception");
 const { hashPassword } = require("../utils/hashPassword");
 class UserService {
   async create(payload) {
-    let userData = await user.findOne({ where: { username: payload.username } });//fetch user
-    let userDataEmail = await user.findOne({ where: { email: payload.email } });//fetch user email
+    let userData = await user.findOne({
+      where: { username: payload.username },
+    }); //fetch user
+    let userDataEmail = await user.findOne({ where: { email: payload.email } }); //fetch user email
     if (userData == null && userDataEmail == null) {
       if (payload.password == payload.confirmPassword) {
         const { password } = payload;
+        payload.password = await hashPassword(password);
+        const userData = await user.create(payload); //user create
         payload.password = hashPassword(password);
         const userData = await user.create(payload)//user create
         // await userRole.create({ userId: userData.id, roleId: 2 });//create role for default customer
@@ -23,8 +33,7 @@ class UserService {
       } else {
         throw new passwordMismatchException();
       }
-    }
-    else {
+    } else {
       throw new alreadyExistsException("User");
     }
   }
@@ -32,23 +41,25 @@ class UserService {
   async update(payload, _user) {
     if (payload.password) {
       if (payload.oldPassword) {
-        const compare = await bcrypt.compare(payload.oldPassword, _user.password);//compare user password with payload password
+        const compare = await bcrypt.compare(
+          payload.oldPassword,
+          _user.password
+        ); //compare user password with payload password
         if (compare) {
           const { password } = payload;
+          payload.password = hashPassword(password);
           payload.password = hashPassword(password);
           const returnData = await user.update(payload, {
             where: { id: _user.id },
           });
           return returnData;
-        }
-        else {
+        } else {
           throw new Error("Password did not match with old password");
         }
       } else {
         throw new notFoundException("Please enter old password");
       }
-    }
-    else {
+    } else {
       return await user.update(payload, {
         where: { id: _user.id },
       });
@@ -58,25 +69,24 @@ class UserService {
   async findById(id) {
     const returnData = await user.findOne({ where: { id } });
     if (returnData === null) {
-      throw new notFoundException("User")
+      throw new notFoundException("User");
     }
     return returnData;
   }
-
 
   async login(payload) {
     const { username, password } = payload;
     let _user = await user.findOne({ where: { username: username } });
     if (_user != null) {
-      const compared = await bcrypt.compare(password, _user.password);//compare hashed password
+      const compared = await bcrypt.compare(password, _user.password); //compare hashed password
       if (compared) {
-        const token = generateToken(_user, 68400);//jwt token
+        const token = generateToken(_user, 68400); //jwt token
         return { token: token };
       } else {
         throw new passwordMismatchException();
       }
     } else {
-      throw new notFoundException("User")
+      throw new notFoundException("User");
     }
   }
 
@@ -97,7 +107,6 @@ class UserService {
     return true;
   }
 
-
   //verify token
   async verifyToken(payload, id) {
     const _user = await user.findOne({ where: { resetPasswordToken: payload.token, id: id } });
@@ -112,10 +121,13 @@ class UserService {
   //reset password
   async resetPassword(payload, id) {
     await this.verifyToken(payload.token, id);
+    await this.verifyToken(payload.token, id);
 
+    const _user = await this.findById(id);
     const _user = await this.findById(id);
 
     const { password } = payload;
+    payload.password = hashPassword(password);
     payload.password = hashPassword(password);
     await user.update(payload, {
       where: { id: _user.id },
@@ -128,12 +140,10 @@ class UserService {
     return true;
   }
 
-
   async checkExpiryDate(_user) {
     const expiryDate = _user.resetPasswordExpires;
     return expiryDate < new Date() ? true : false;
-
   }
 }
 
-module.exports = new UserService;
+module.exports = new UserService();
