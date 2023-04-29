@@ -1,3 +1,5 @@
+const dashboardService = require("../service/dashboard.service");
+
 class DashboardController {
   async getData() {
     try {
