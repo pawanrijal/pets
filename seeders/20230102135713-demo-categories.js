@@ -41,40 +41,46 @@ module.exports = {
         created_at: new Date(),
         updated_at: new Date(),
       },
+      {
+        id: 7,
+        title: "Miscellaneous",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
 
       // income categories
       {
-        id: 7,
+        id: 8,
         title: "Salary",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        id: 8,
+        id: 9,
         title: "Investment income",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        id: 9,
+        id: 10,
         title: "Rental income",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        id: 10,
+        id: 11,
         title: "Gifts/inheritances",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        id: 11,
+        id: 12,
         title: "Retirement income",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        id: 12,
+        id: 13,
         title: "Miscellaneous",
         created_at: new Date(),
         updated_at: new Date(),
