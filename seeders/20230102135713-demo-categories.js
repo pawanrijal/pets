@@ -7,7 +7,7 @@ module.exports = {
       // expense categories
       {
         id: 1,
-        title: "Housing (rent/mortgage, utilities, property taxes, repairs)",
+        title: "Housing",
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -19,68 +19,62 @@ module.exports = {
       },
       {
         id: 3,
-        title: "Transportation",
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 4,
         title: "Entertainment",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        id: 5,
+        id: 4,
         title: "Health",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        id: 6,
+        id: 5,
         title: "Education",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        id: 7,
-        title: "Debt payments (credit card bills, loans)",
+        id: 6,
+        title: "Debt payments",
         created_at: new Date(),
         updated_at: new Date(),
       },
 
       // income categories
       {
-        id: 8,
+        id: 7,
         title: "Salary",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        id: 9,
-        title: "Investment income (dividends, capital gains, interest)",
+        id: 8,
+        title: "Investment income",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        id: 10,
+        id: 9,
         title: "Rental income",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
+        id: 10,
+        title: "Gifts/inheritances",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
         id: 11,
-        title: "Gifts/inheritances (unexpected income from family or friends)",
+        title: "Retirement income",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         id: 12,
-        title: "Retirement income (social security, pensions, annuities)",
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      {
-        id: 13,
         title: "Miscellaneous",
         created_at: new Date(),
         updated_at: new Date(),
