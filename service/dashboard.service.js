@@ -23,11 +23,11 @@ class DashboardService {
       totalIncome + totalCashIn - (totalExpense + totalCashOut);
 
     return {
-      ...(totalIncome !== 0 && { totalIncome }),
-      ...(totalExpense !== 0 && { totalExpense }),
-      ...(totalCashIn !== 0 && { totalCashIn }),
-      ...(totalCashOut !== 0 && { totalCashOut }),
-      ...(totalBalance !== 0 && { totalBalance }),
+      totalIncome,
+      totalExpense,
+      totalCashIn,
+      totalCashOut,
+      totalBalance,
     };
   }
 }
