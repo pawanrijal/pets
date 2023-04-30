@@ -15,11 +15,15 @@ class DashboardService {
       where: { type: "out", userId: user.id },
     });
 
+    const totalBalance =
+      totalIncome + totalCashIn - (totalExpense + totalCashOut);
+
     return {
       totalIncome,
       totalExpense,
       totalCashIn,
       totalCashOut,
+      totalBalance,
     };
   }
 }
