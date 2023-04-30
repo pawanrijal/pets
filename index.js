@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const cors = require("cors")
+const cors = require("cors");
 const morgan = require("morgan");
 const { sequelize } = require("./lib/database.connection");
 const HttpException = require("./exceptions/http.exception");
@@ -11,8 +11,7 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static('uploads'));
-
+app.use(express.static("uploads"));
 
 initRoutes(app);
 
@@ -21,7 +20,7 @@ sequelize
   .authenticate()
   .then(() => {
     // sequelize.sync({ alter: true });
-    console.log("Database connected successfully")
+    console.log("Database connected successfully");
   })
   .catch((err) => {
     console.log(err.message);
@@ -58,7 +57,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);

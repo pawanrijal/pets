@@ -129,6 +129,7 @@ class FinanceService {
     return returnData;
   }
   async amount(payload, user) {
+    console.log(user);
     const query = {
       type: payload.type,
       userId: user.id,
