@@ -5,7 +5,7 @@ const runQueries = async (date, type) => {
     date: date,
     type: type,
   });
-  let currentDateArr = date.split("-");
+  const currentDateArr = date.split("-");
   const number = currentDateArr[1] - 1;
   currentDateArr[1] = number.toString().padStart(2, "0");
   const previousDateStr = currentDateArr.join("-");
@@ -21,8 +21,8 @@ const runQueries = async (date, type) => {
 
   return {
     label: date,
-    current: currentAmount.total === null ? 0 : currentAmount.total,
-    previous: previousAmount.total === null ? 0 : previousAmount.total,
+    current: currentAmount.total ?? 0,
+    previous: previousAmount.total ?? 0,
   };
 };
 module.exports = { runQueries };
