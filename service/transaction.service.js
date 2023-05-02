@@ -18,18 +18,38 @@ class TransactionService {
     return returnData;
   }
 
-  async findAll(payload, user) {
+  async findAll(payload, user, option) {
     if (payload.partyId != null || payload.partyId != undefined) {
-      return await transaction.findAll({
-        where: { userId: user.id, partyId: payload.partyId },
-      });
+      return {
+        data: await transaction.findAll({
+          where: { userId: user.id, partyId: payload.partyId },
+          ...option,
+        }),
+        total: await transaction.count({
+          where: { userId: user.id, partyId: payload.partyId },
+        }),
+      };
     }
     if (payload.type != null || payload.type != undefined) {
-      return await transaction.findAll({
-        where: { userId: user.id, type: payload.type },
-      });
+      return {
+        data: await transaction.findAll({
+          where: { userId: user.id, type: payload.type },
+          ...option,
+        }),
+        total: await transaction.count({
+          where: { userId: user.id, partyId: payload.partyId },
+        }),
+      };
     }
-    return await transaction.findAll({ where: { userId: user.id } });
+    return {
+      data: await transaction.findAll({
+        where: { userId: user.id },
+        ...option,
+      }),
+      total: await transaction.count({
+        where: { userId: user.id, partyId: payload.partyId },
+      }),
+    };
   }
   async findById(id, user) {
     const transactionData = await transaction.findOne({ where: { id } });

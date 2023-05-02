@@ -24,6 +24,7 @@ class UserService {
       if (payload.password == payload.confirmPassword) {
         const { password } = payload;
         payload.password = await hashPassword(password);
+        console.log(payload);
         const userData = await user.create(payload); //user create
         payload.password = hashPassword(password);
         const userData = await user.create(payload)//user create

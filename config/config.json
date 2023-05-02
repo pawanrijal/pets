@@ -4,20 +4,20 @@
     "password": "qwert123@",
     "database": "pets",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "mysql"
   },
   "test": {
     "username": "postgres",
     "password": "qwert123@",
     "database": "pets",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "mysql"
   },
   "production": {
     "username": "postgres",
     "password": "qwert123@",
     "database": "pets",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "mysql"
   }
 }

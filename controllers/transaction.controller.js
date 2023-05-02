@@ -31,11 +31,30 @@ class TransactionController {
       const payload = {};
       payload.partyId = req.query.partyId;
       payload.type = req.query.type;
+      const { limit, offset } = req.query;
+      const option = {};
+      if (limit != null && offset != null) {
+        option.limit = parseInt(limit);
+        option.offset = parseInt(offset);
+      }
+      option.order = [["createdAt", "DESC"]];
       const transactionData = await transactionService.findAll(
         payload,
-        req.user
+        req.user,
+        option
       );
-      successResponse(res, 200, transactionData, "Transaction fetched");
+      const meta = {
+        limit: option.limit,
+        offset: option.offset,
+        total: goalData.total,
+      };
+      successResponse(
+        res,
+        200,
+        transactionData.data,
+        "Transaction fetched",
+        meta
+      );
     } catch (err) {
       next(err);
     }

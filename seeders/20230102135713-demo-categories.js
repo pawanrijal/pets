@@ -4,57 +4,90 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     return queryInterface.bulkInsert("categories", [
+      // expense categories
       {
         id: 1,
-        title: "Household Items",
+        title: "Foods and Drinks",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         id: 2,
-        title: "House repair/maintenance",
+        title: "Transportation",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         id: 3,
-        title: "Loans/Advances given",
+        title: "Entertainment",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         id: 4,
-        title: "Repayment of loans/advances",
+        title: "Health",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         id: 5,
-        title: "Deposit to bank account",
+        title: "Education",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         id: 6,
-        title: "Real Estate Investment",
+        title: "Debt payments",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         id: 7,
-        title: "Vehicle and Machineries",
+        title: "Housing",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
         id: 8,
-        title: "Food",
+        title: "Miscellaneous",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+
+      // income categories
+      {
+        id: 9,
+        title: "Salary",
         created_at: new Date(),
         updated_at: new Date(),
       },
       {
-        id: 9,
-        title: "Others",
+        id: 10,
+        title: "Investment income",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: 11,
+        title: "Rental income",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: 12,
+        title: "Gifts/inheritances",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: 13,
+        title: "Retirement income",
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        id: 14,
+        title: "Miscellaneous",
         created_at: new Date(),
         updated_at: new Date(),
       },

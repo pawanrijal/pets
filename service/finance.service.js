@@ -102,15 +102,22 @@ class FinanceService {
     return returnData;
   }
 
-  async findAll(user, type) {
+  async findAll(user, type, option) {
     if (type != undefined && type != "") {
       const returnData = await finance.findAll({
         where: { userId: user.id, type: type },
+        ...option,
       });
       return returnData;
     }
-    const returnData = await finance.findAll({ where: { userId: user.id } });
-    return returnData;
+    const returnData = await finance.findAll({
+      where: { userId: user.id },
+      ...option,
+    });
+    const total = await finance.count({
+      where: { userId: user.id },
+    });
+    return { data: returnData, total };
   }
 
   async findById(id, user) {
@@ -129,6 +136,7 @@ class FinanceService {
     return returnData;
   }
   async amount(payload, user) {
+    console.log(user);
     const query = {
       type: payload.type,
       userId: user.id,
