@@ -15,9 +15,20 @@ class FinanceController {
 
   async findAll(req, res, next) {
     try {
-      const { type } = req.query;
-      const financeData = await financeService.findAll(req.user, type);
-      successResponse(res, 200, financeData, "Finance fetched");
+      const { limit, offset, type } = req.query;
+      const option = {};
+      if (limit != null && offset != null) {
+        option.limit = parseInt(limit);
+        option.offset = parseInt(offset);
+      }
+      option.order = [["createdAt", "DESC"]];
+      const financeData = await financeService.findAll(req.user, type, option);
+      const meta = {
+        limit: option.limit,
+        offset: option.offset,
+        total: financeData.total,
+      };
+      successResponse(res, 200, financeData.data, "Finance fetched", meta);
     } catch (err) {
       console.log(err);
       next(err);

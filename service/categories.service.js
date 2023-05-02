@@ -3,8 +3,8 @@ const { category, finance, goal } = require("../lib/database.connection");
 const { Op } = require("sequelize");
 
 class CategoryService {
-  async findAll(user) {
-    const categoryData = await category.findAll();
+  async findAll(user, option) {
+    const categoryData = await category.findAll(option);
     const data = categoryData.map(async (obj) => {
       const total = await this.totalByCategory(user, obj.id);
       const totalTarget = await this.totalTargetByCategory(user, obj.id);
@@ -15,8 +15,8 @@ class CategoryService {
         target: totalTarget,
       };
     });
-
-    return Promise.all(data);
+    const total = await category.count();
+    return { data: await Promise.all(data), total };
   }
 
   async findById(id) {
