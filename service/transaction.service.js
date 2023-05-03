@@ -19,7 +19,7 @@ class TransactionService {
   }
 
   async findAll(payload, user, option) {
-    if (payload.partyId != null || payload.partyId != undefined) {
+    if (payload.partyId != null && payload.partyId != undefined) {
       return {
         data: await transaction.findAll({
           where: { userId: user.id, partyId: payload.partyId },
@@ -30,7 +30,7 @@ class TransactionService {
         }),
       };
     }
-    if (payload.type != null || payload.type != undefined) {
+    if (payload.type != null && payload.type != undefined) {
       return {
         data: await transaction.findAll({
           where: { userId: user.id, type: payload.type },
@@ -47,7 +47,7 @@ class TransactionService {
         ...option,
       }),
       total: await transaction.count({
-        where: { userId: user.id, partyId: payload.partyId },
+        where: { userId: user.id },
       }),
     };
   }
