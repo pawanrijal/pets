@@ -46,7 +46,7 @@ class TransactionController {
       const meta = {
         limit: option.limit,
         offset: option.offset,
-        total: goalData.total,
+        total: transactionData.total,
       };
       successResponse(
         res,
