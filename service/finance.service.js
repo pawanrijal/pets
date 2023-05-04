@@ -108,7 +108,10 @@ class FinanceService {
         where: { userId: user.id, type: type },
         ...option,
       });
-      return returnData;
+      const total = await finance.count({
+        where: { userId: user.id, type: type },
+      });
+      return { data: returnData, total };
     }
     const returnData = await finance.findAll({
       where: { userId: user.id },

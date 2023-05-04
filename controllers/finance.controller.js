@@ -1,4 +1,5 @@
 const { notFoundException } = require("../exceptions/notFound.exception");
+const { finance } = require("../lib/database.connection");
 const financeService = require("../service/finance.service");
 const successResponse = require("../utils/successResponse");
 
