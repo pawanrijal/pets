@@ -30,7 +30,7 @@ class PartyService {
       where: { userId: user.id },
       ...option,
     });
-    const total = await notification.count({
+    const total = await party.count({
       where: { userId: user.id },
     });
     return { data: returnData, total };
