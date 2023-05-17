@@ -37,7 +37,7 @@ class PartyController {
       const meta = {
         limit: option.limit,
         offset: option.offset,
-        total: goalData.total,
+        total: partyData.total,
       };
       successResponse(res, 200, partyData.data, "Party fetched", meta);
     } catch (err) {
