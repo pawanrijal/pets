@@ -6,17 +6,15 @@ const { sequelize } = require("./lib/database.connection");
 const HttpException = require("./exceptions/http.exception");
 const { initRoutes } = require("./routes/index");
 const passport = require("passport");
-const IAes = require("./algorithm/aes");
 
 require("./utils/passportConfig")(passport);
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static("uploads"));
+app.use("/images", express.static("uploads"));
 
 initRoutes(app);
-
 //sequelize authentication to database
 sequelize
   .authenticate()
@@ -60,7 +58,7 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT;
-// var encr = IAes.encrypt("big secret", "pāşšŵōřđ", 256);
+// var encr = IAes.encrypt("big secret", "pāşšŵōřđ", 256); // encr: 'lwGl66VVwVObKIr6of8HVqJr'
 // console.log(encr);
 // var decr = IAes.decrypt("lwGl66VVwVObKIr6of8HVqJr", "pāşšŵōřđ", 256); // decr: 'big secret'
 

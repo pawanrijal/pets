@@ -22,13 +22,10 @@ class UserController {
   async update(req, res, next) {
     try {
       if (req.file) {
-        // Aes.encrypt("big secret", "pāşšŵōřđ", 256);
-        req.body.profilePic = IAes.encrypt(
-          process.env.ENCRYPTION_SECRET,
-          req.file.path,
-          256
-        );
+        req.body.profilePic = req.file.path;
+        req.body.hostPath = "http://" + req.headers.host;
       }
+
       const userData = await UserService.update(req.body, req.user);
       successResponse(res, 200, userData, "User updated");
     } catch (err) {

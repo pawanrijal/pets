@@ -14,6 +14,8 @@ const {
   tokenExpiredException,
 } = require("../exceptions/tokenExpired.exception");
 const { hashPassword } = require("../utils/hashPassword");
+const { deleteImage } = require("../utils/image");
+const IAes = require("../algorithm/aes");
 class UserService {
   async create(payload) {
     let userData = await user.findOne({
@@ -38,30 +40,49 @@ class UserService {
   }
 
   async update(payload, _user) {
-    if (payload.password) {
-      if (payload.oldPassword) {
-        const compare = await bcrypt.compare(
-          payload.oldPassword,
-          _user.password
-        ); //compare user password with payload password
-        if (compare) {
-          const { password } = payload;
-          payload.password = hashPassword(password);
-          const returnData = await user.update(payload, {
-            where: { id: _user.id },
-          });
-          return returnData;
-        } else {
-          throw new Error("Password did not match with old password");
+    // if (payload.password) {
+    //   if (payload.oldPassword) {
+    //     const compare = await bcrypt.compare(
+    //       payload.oldPassword,
+    //       _user.password
+    //     ); //compare user password with payload password
+    //     if (compare) {
+    //       const { password } = payload;
+    //       payload.password = hashPassword(password);
+    //       const returnData = await user.update(payload, {
+    //         where: { id: _user.id },
+    //       });
+    //       return returnData;
+    //     } else {
+    //       throw new Error("Password did not match with old password");
+    //     }
+    //   } else {
+    //     throw new notFoundException("Please enter old password");
+    //   }
+    // }
+    if (payload.profilePic) {
+      // Aes.encrypt("big secret", "pāşšŵōřđ", 256);
+      payload.profilePic = IAes.encrypt(
+        payload.profilePic,
+        process.env.ENCRYPTION_SECRET,
+        256
+      );
+      if (_user.profilePic) {
+        const prevImage = IAes.decrypt(
+          _user.profilePic,
+          process.env.ENCRYPTION_SECRET,
+          256
+        );
+        // const deleted = deleteImage(`${payload.hostPath}/` + prevImage);
+        const deleted = deleteImage(prevImage);
+        if (!deleted) {
+          throw new Error("Failed to delete");
         }
-      } else {
-        throw new notFoundException("Please enter old password");
       }
-    } else {
-      return await user.update(payload, {
-        where: { id: _user.id },
-      });
     }
+    return await user.update(payload, {
+      where: { id: _user.id },
+    });
   }
 
   async findById(id) {
