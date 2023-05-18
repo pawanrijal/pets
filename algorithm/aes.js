@@ -1,21 +1,7 @@
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
-/*  AES Counter-mode implementation in JavaScript       (c) Chris Veness 2005-2014 / MIT Licence  */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
-
 /* jshint node:true */ /* global define, escape, unescape, btoa, atob */
 "use strict";
 if (typeof module != "undefined" && module.exports) var Aes = require("./IAes"); // CommonJS (Node.js)
 
-/**
- * Aes.Ctr: Counter-mode (CTR) wrapper for AES.
- *
- * This encrypts a Unicode string to produces a base64 ciphertext using 128/192/256-bit AES,
- * and the converse to decrypt an encrypted ciphertext.
- *
- * See http://csrc.nist.gov/publications/nistpubs/800-38a/sp800-38a.pdf
- *
- * @augments Aes
- */
 Aes.Ctr = {};
 
 /**
@@ -27,9 +13,6 @@ Aes.Ctr = {};
  * @param   {string} password - The password to use to generate a key.
  * @param   {number} nBits - Number of bits to be used in the key; 128 / 192 / 256.
  * @returns {string} Encrypted text.
- *
- * @example
- *   var encr = Aes.Ctr.encrypt('big secret', 'pāşšŵōřđ', 256); // encr: 'lwGl66VVwVObKIr6of8HVqJr'
  */
 Aes.Ctr.encrypt = function (plaintext, password, nBits) {
   var blockSize = 16; // block size fixed at 16 bytes / 128 bits (Nb=4) for AES
@@ -174,8 +157,7 @@ Aes.Ctr.decrypt = function (ciphertext, password, nBits) {
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
 
-/** Extend String object with method to encode multi-byte string to utf8
- *  - monsur.hossa.in/2012/07/20/utf-8-in-javascript.html */
+/** Extend String object with method to encode multi-byte string to utf8*/
 if (typeof String.prototype.utf8Encode == "undefined") {
   String.prototype.utf8Encode = function () {
     return unescape(encodeURIComponent(this));
@@ -193,9 +175,7 @@ if (typeof String.prototype.utf8Decode == "undefined") {
   };
 }
 
-/** Extend String object with method to encode base64
- *  - developer.mozilla.org/en-US/docs/Web/API/window.btoa, nodejs.org/api/buffer.html
- *  note: if btoa()/atob() are not available (eg IE9-), try github.com/davidchambers/Base64.js */
+/** Extend String object with method to encode base64*/
 if (typeof String.prototype.base64Encode == "undefined") {
   String.prototype.base64Encode = function () {
     if (typeof btoa != "undefined") return btoa(this); // browser

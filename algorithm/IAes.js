@@ -2,10 +2,6 @@
 "use strict";
 
 /**
- * AES (Rijndael cipher) encryption routines,
- *
- * Reference implementation of FIPS-197 http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf.
- *
  * @namespace
  */
 var Aes = {};
