@@ -6,6 +6,8 @@ const { sequelize } = require("./lib/database.connection");
 const HttpException = require("./exceptions/http.exception");
 const { initRoutes } = require("./routes/index");
 const passport = require("passport");
+const IAes = require("./algorithm/aes");
+
 require("./utils/passportConfig")(passport);
 app.use(cors());
 app.use(morgan("dev"));
@@ -58,6 +60,9 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT;
+// var encr = IAes.encrypt("big secret", "pāşšŵōřđ", 256);
+// console.log(encr);
+// var decr = IAes.decrypt("lwGl66VVwVObKIr6of8HVqJr", "pāşšŵōřđ", 256); // decr: 'big secret'
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
