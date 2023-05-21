@@ -40,26 +40,6 @@ class UserService {
   }
 
   async update(payload, _user) {
-    // if (payload.password) {
-    //   if (payload.oldPassword) {
-    //     const compare = await bcrypt.compare(
-    //       payload.oldPassword,
-    //       _user.password
-    //     ); //compare user password with payload password
-    //     if (compare) {
-    //       const { password } = payload;
-    //       payload.password = hashPassword(password);
-    //       const returnData = await user.update(payload, {
-    //         where: { id: _user.id },
-    //       });
-    //       return returnData;
-    //     } else {
-    //       throw new Error("Password did not match with old password");
-    //     }
-    //   } else {
-    //     throw new notFoundException("Please enter old password");
-    //   }
-    // }
     if (payload.profilePic) {
       // Aes.encrypt("big secret", "pāşšŵōřđ", 256);
       payload.profilePic = IAes.encrypt(
@@ -73,7 +53,6 @@ class UserService {
           process.env.ENCRYPTION_SECRET,
           256
         );
-        // const deleted = deleteImage(`${payload.hostPath}/` + prevImage);
         const deleted = deleteImage(prevImage);
         if (!deleted) {
           throw new Error("Failed to delete");

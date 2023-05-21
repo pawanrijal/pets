@@ -174,10 +174,10 @@ class FinanceService {
   }
 
   async getTotalAmountOfDate(payload) {
-    const { date, type } = payload;
+    const { date, type, user } = payload;
     const total = await finance.findOne({
       attributes: [[sequelize.fn("sum", sequelize.col("amount")), "total"]],
-      where: { type: type, date: date },
+      where: { type: type, date: date, userId: user.id },
     });
     return total.dataValues;
   }

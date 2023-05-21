@@ -12,7 +12,7 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use("/images", express.static("uploads"));
+// app.use("/images", express.static("uploads"));
 
 initRoutes(app);
 //sequelize authentication to database
@@ -32,6 +32,28 @@ app.get("/test", (req, res) => {
     message: "test successful",
   });
 });
+// app.use("/preview", (req, res, next) => {
+//   const { encrypted } = req.query;
+//   const fileName = IAes.decrypt(encrypted, process.env.ENCRYPTION_SECRET, 256);
+// });
+
+// // Your existing code
+// app.use("/preview", (req, res, next) => {
+//   const { encrypted } = req.query;
+//   const fileName = IAes.decrypt(encrypted, process.env.ENCRYPTION_SECRET, 256);
+
+//   // Assuming the decrypted filename is a relative path to the image file
+//   req.filePath = path.join(__dirname, "uploads", fileName);
+//   next();
+// });
+
+// // Serve static file with decrypted filename
+// app.use(
+//   "/preview",
+//   express.static((req, res, next) => req.filePath)
+// );
+
+// Serve static files
 
 //if Routes Not Found
 app.use((req, res, next) => {
