@@ -29,7 +29,6 @@ class UserService {
         console.log(payload);
         const userData = await user.create(payload); //user create
         payload.password = hashPassword(password);
-        const userData = await user.create(payload)//user create
         // await userRole.create({ userId: userData.id, roleId: 2 });//create role for default customer
         userData.password = undefined;
         return userData;
@@ -122,7 +121,6 @@ class UserService {
     await this.verifyToken(payload.token, id);
     await this.verifyToken(payload.token, id);
 
-    const _user = await this.findById(id);
     const _user = await this.findById(id);
 
     const { password } = payload;
