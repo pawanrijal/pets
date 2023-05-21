@@ -14,6 +14,8 @@ const {
   tokenExpiredException,
 } = require("../exceptions/tokenExpired.exception");
 const { hashPassword } = require("../utils/hashPassword");
+const { deleteImage } = require("../utils/image");
+const IAes = require("../algorithm/aes");
 class UserService {
   async create(payload) {
     let userData = await user.findOne({
@@ -49,7 +51,6 @@ class UserService {
         if (compare) {
           const { password } = payload;
           payload.password = hashPassword(password);
-          payload.password = hashPassword(password);
           const returnData = await user.update(payload, {
             where: { id: _user.id },
           });
@@ -57,14 +58,11 @@ class UserService {
         } else {
           throw new Error("Password did not match with old password");
         }
-      } else {
-        throw new notFoundException("Please enter old password");
       }
-    } else {
-      return await user.update(payload, {
-        where: { id: _user.id },
-      });
     }
+    return await user.update(payload, {
+      where: { id: _user.id },
+    });
   }
 
   async findById(id) {

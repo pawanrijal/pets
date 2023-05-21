@@ -1,4 +1,3 @@
-
 module.exports = (sequelize, type) => {
   return sequelize.define(
     "users",
@@ -18,7 +17,7 @@ module.exports = (sequelize, type) => {
       },
       profilePic: {
         type: type.TEXT,
-        allowNull: true
+        allowNull: true,
       },
       email: {
         type: type.STRING,
@@ -32,10 +31,10 @@ module.exports = (sequelize, type) => {
       resetPasswordExpires: {
         type: type.DATE,
         allowNull: true,
-      }
+      },
     },
     {
-      timestamps: true
+      timestamps: true,
     }
   );
 };
