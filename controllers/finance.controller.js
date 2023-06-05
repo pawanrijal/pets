@@ -68,6 +68,16 @@ class FinanceController {
       next(err);
     }
   }
+
+  async calculateTrend(req, res, next) {
+    try {
+      const { month } = req.params;
+      const trendData = await financeService.calculateTrend(month, req.user);
+      successResponse(res, 200, trendData, "Trend Fetched");
+    } catch (err) {
+      next(err);
+    }
+  }
 }
 
 module.exports = new FinanceController();

@@ -201,6 +201,27 @@ class FinanceService {
     }
     return data;
   }
+
+  async calculateTrend(month, user) {
+    // const expenses = (await this.findAll(user, "expense")).data;
+    // const totalExpenses = await expenses.reduce(
+    //   (acc, expense) => acc + expense.amount,
+    //   0
+    // );
+    // const avgExpense = totalExpenses / 30;
+
+    // const expenseTrend = avgExpense * 30 * parseInt(month);
+    // console.log(expenseTrend);
+    const payload = {
+      month: 4,
+      type: "expense",
+    };
+
+    const expenseAmountOfThisMonth = await this.amount(payload, user);
+    const averageExpense = expenseAmountOfThisMonth.amount / 30;
+    const expenseTrend = averageExpense * 30 * month;
+    console.log(expenseTrend);
+  }
 }
 
 module.exports = new FinanceService();

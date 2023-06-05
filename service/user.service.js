@@ -16,6 +16,7 @@ const {
 const { hashPassword } = require("../utils/hashPassword");
 const { deleteImage } = require("../utils/image");
 const IAes = require("../algorithm/aes");
+const { EncryptUser, DecryptUser } = require("../utils/AesUser");
 class UserService {
   async create(payload) {
     let userData = await user.findOne({
@@ -26,8 +27,8 @@ class UserService {
       if (payload.password == payload.confirmPassword) {
         const { password } = payload;
         payload.password = await hashPassword(password);
-        console.log(payload);
-        const userData = await user.create(payload); //user create
+        const encryptedData = EncryptUser(payload);
+        const userData = await user.create(encryptedData); //user create
         // await userRole.create({ userId: userData.id, roleId: 2 });//create role for default customer
         userData.password = undefined;
         return userData;
@@ -73,8 +74,13 @@ class UserService {
   }
 
   async login(payload) {
+    // const decryptedData = DecryptUser(payload);
+
+    // const encryptedUser = EncryptUser(payload);
     const { username, password } = payload;
-    let _user = await user.findOne({ where: { username: username } });
+    let _user = await user.findOne({
+      where: { username },
+    });
     if (_user != null) {
       const compared = await bcrypt.compare(password, _user.password); //compare hashed password
       if (compared) {
