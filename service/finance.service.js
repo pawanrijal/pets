@@ -9,6 +9,7 @@ const { notFoundException } = require("../exceptions/notFound.exception");
 const goalService = require("./goal.service");
 const HttpException = require("../exceptions/http.exception");
 const { Sequelize } = require("sequelize");
+const { predict } = require("../algorithm/predictionImpl");
 
 class FinanceService {
   async create(payload, _user) {
@@ -113,6 +114,7 @@ class FinanceService {
       });
       return { data: returnData, total };
     }
+
     const returnData = await finance.findAll({
       where: { userId: user.id },
       ...option,
@@ -202,25 +204,10 @@ class FinanceService {
     return data;
   }
 
-  async calculateTrend(month, user) {
-    // const expenses = (await this.findAll(user, "expense")).data;
-    // const totalExpenses = await expenses.reduce(
-    //   (acc, expense) => acc + expense.amount,
-    //   0
-    // );
-    // const avgExpense = totalExpenses / 30;
-
-    // const expenseTrend = avgExpense * 30 * parseInt(month);
-    // console.log(expenseTrend);
-    const payload = {
-      month: 4,
-      type: "expense",
-    };
-
-    const expenseAmountOfThisMonth = await this.amount(payload, user);
-    const averageExpense = expenseAmountOfThisMonth.amount / 30;
-    const expenseTrend = averageExpense * 30 * month;
-    console.log(expenseTrend);
+  async predict(user, type) {
+    const financeData = await this.findAll(user, type);
+    const prediction = await predict(financeData.data, type, "2023-05");
+    return prediction;
   }
 }
 

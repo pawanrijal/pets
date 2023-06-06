@@ -44,7 +44,7 @@ class CategoryService {
         type: "expense",
       },
     });
-    return totalAmount;
+    return totalAmount ?? 0;
   }
 
   async totalTargetByCategory(user, categoryId) {
