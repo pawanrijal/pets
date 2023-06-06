@@ -6,6 +6,7 @@ const { sequelize } = require("./lib/database.connection");
 const HttpException = require("./exceptions/http.exception");
 const { initRoutes } = require("./routes/index");
 const passport = require("passport");
+const { predict } = require("./algorithm/predictionImpl");
 
 require("./utils/passportConfig")(passport);
 app.use(cors());

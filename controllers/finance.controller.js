@@ -1,5 +1,4 @@
 const { notFoundException } = require("../exceptions/notFound.exception");
-const { finance } = require("../lib/database.connection");
 const financeService = require("../service/finance.service");
 const successResponse = require("../utils/successResponse");
 
@@ -69,11 +68,11 @@ class FinanceController {
     }
   }
 
-  async calculateTrend(req, res, next) {
+  async predict(req, res, next) {
     try {
-      const { month } = req.params;
-      const trendData = await financeService.calculateTrend(month, req.user);
-      successResponse(res, 200, trendData, "Trend Fetched");
+      const { type } = req.query;
+      const predictionData = await financeService.predict(req.user, type);
+      successResponse(res, 200, predictionData, "Prediction Done");
     } catch (err) {
       next(err);
     }
