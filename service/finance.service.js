@@ -174,10 +174,10 @@ class FinanceService {
   }
 
   async getTotalAmountOfDate(payload) {
-    const { date, type } = payload;
+    const { date, type, user } = payload;
     const total = await finance.findOne({
       attributes: [[sequelize.fn("sum", sequelize.col("amount")), "total"]],
-      where: { type: type, date: date },
+      where: { type: type, date: date, userId: user.id },
     });
     return total.dataValues;
   }
@@ -200,6 +200,27 @@ class FinanceService {
       data.approached = true;
     }
     return data;
+  }
+
+  async calculateTrend(month, user) {
+    // const expenses = (await this.findAll(user, "expense")).data;
+    // const totalExpenses = await expenses.reduce(
+    //   (acc, expense) => acc + expense.amount,
+    //   0
+    // );
+    // const avgExpense = totalExpenses / 30;
+
+    // const expenseTrend = avgExpense * 30 * parseInt(month);
+    // console.log(expenseTrend);
+    const payload = {
+      month: 4,
+      type: "expense",
+    };
+
+    const expenseAmountOfThisMonth = await this.amount(payload, user);
+    const averageExpense = expenseAmountOfThisMonth.amount / 30;
+    const expenseTrend = averageExpense * 30 * month;
+    console.log(expenseTrend);
   }
 }
 

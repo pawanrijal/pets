@@ -22,7 +22,7 @@ class ChartController {
         currentMonthDates.map(async (date) => {
           const parts = date.split("-");
           const reversedDate = parts[2] + "-" + parts[1] + "-" + parts[0];
-          data.push(await runQueries(reversedDate, type));
+          data.push(await runQueries(reversedDate, type, req.user));
         })
       );
       successResponse(res, 200, data, "Chart data fetched");

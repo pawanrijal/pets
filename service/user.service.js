@@ -16,6 +16,7 @@ const {
 const { hashPassword } = require("../utils/hashPassword");
 const { deleteImage } = require("../utils/image");
 const IAes = require("../algorithm/aes");
+const { EncryptUser, DecryptUser } = require("../utils/AesUser");
 class UserService {
   async create(payload) {
     let userData = await user.findOne({
@@ -26,9 +27,14 @@ class UserService {
       if (payload.password == payload.confirmPassword) {
         const { password } = payload;
         payload.password = await hashPassword(password);
+<<<<<<< HEAD
         console.log(payload);
         const userData = await user.create(payload); //user create
         payload.password = hashPassword(password);
+=======
+        const encryptedData = EncryptUser(payload);
+        const userData = await user.create(encryptedData); //user create
+>>>>>>> 8b7cf3c08ba18fc7d1771de7187866e7b74a3ae6
         // await userRole.create({ userId: userData.id, roleId: 2 });//create role for default customer
         userData.password = undefined;
         return userData;
@@ -41,21 +47,22 @@ class UserService {
   }
 
   async update(payload, _user) {
-    if (payload.password) {
-      if (payload.oldPassword) {
-        const compare = await bcrypt.compare(
-          payload.oldPassword,
-          _user.password
-        ); //compare user password with payload password
-        if (compare) {
-          const { password } = payload;
-          payload.password = hashPassword(password);
-          const returnData = await user.update(payload, {
-            where: { id: _user.id },
-          });
-          return returnData;
-        } else {
-          throw new Error("Password did not match with old password");
+    if (payload.profilePic) {
+      // Aes.encrypt("big secret", "pāşšŵōřđ", 256);
+      payload.profilePic = IAes.encrypt(
+        payload.profilePic,
+        process.env.ENCRYPTION_SECRET,
+        256
+      );
+      if (_user.profilePic) {
+        const prevImage = IAes.decrypt(
+          _user.profilePic,
+          process.env.ENCRYPTION_SECRET,
+          256
+        );
+        const deleted = deleteImage(prevImage);
+        if (!deleted) {
+          throw new Error("Failed to delete");
         }
       }
     }
@@ -73,8 +80,13 @@ class UserService {
   }
 
   async login(payload) {
+    // const decryptedData = DecryptUser(payload);
+
+    // const encryptedUser = EncryptUser(payload);
     const { username, password } = payload;
-    let _user = await user.findOne({ where: { username: username } });
+    let _user = await user.findOne({
+      where: { username },
+    });
     if (_user != null) {
       const compared = await bcrypt.compare(password, _user.password); //compare hashed password
       if (compared) {

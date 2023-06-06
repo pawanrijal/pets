@@ -1,6 +1,6 @@
 module.exports = (sequelize, type) => {
   return sequelize.define(
-    "goals",
+    "targets",
     {
       id: {
         type: type.INTEGER,
@@ -18,7 +18,7 @@ module.exports = (sequelize, type) => {
       },
       description: {
         type: type.TEXT,
-        allowNull: true,
+        allowNull: false,
       },
     },
     {
