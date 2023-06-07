@@ -58,10 +58,8 @@ class PartyController {
 
   async delete(req, res, next) {
     try {
-      const partyData = await partyService.delete(
-        req.body.partyId,
-        await req.user
-      );
+      const { id } = req.params;
+      const partyData = await partyService.delete(id, req.user);
       successResponse(res, 200, partyData, "party Deleted");
     } catch (err) {
       next(err);

@@ -37,7 +37,7 @@ class PartyService {
   }
 
   async findById(id, user) {
-    const partyData = await party.findOne({ where: { id } });
+    const partyData = await party.findOne({ where: { id, userId: user.id } });
     if (partyData === null || partyData === undefined)
       throw new notFoundException("Party");
     const returnData = await party.findOne({ where: { userId: user.id } });
