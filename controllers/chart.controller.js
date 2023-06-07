@@ -2,9 +2,9 @@ const successResponse = require("../utils/successResponse");
 const { runQueries } = require("../utils/query");
 const { finance, category } = require("../lib/database.connection");
 const { getDatesInMonth } = require("dates-in-month");
-const { predict } = require("../algorithm/predictionImpl");
-const financeService = require("../service/finance.service");
+const { previousMonthData } = require("../algorithm/predictionImpl");
 const { Op } = require("sequelize");
+const { calculatePrediction } = require("../algorithm/linearRegression");
 
 class ChartController {
   async chart(req, res, next) {
@@ -64,19 +64,12 @@ class ChartController {
 
       await Promise.all(
         categoryData.map(async (category) => {
-          const financeData = await finance.findAll({
-            where: {
-              categoryId: category.id,
-              userId: req.user.id,
-              type: type,
-            },
-          });
-          const data = await predict(
-            financeData,
+          const previousThreeMonths = await previousMonthData(
+            category.id,
             type,
-            targetMonth,
-            category.id
+            req.user
           );
+          const prediction = calculatePrediction(previousThreeMonths);
           const currentData = await totalByCategory(
             req.user,
             category.id,
@@ -84,7 +77,7 @@ class ChartController {
           );
           returnData.push({
             label: category.title,
-            predictedData: data,
+            predictedData: prediction,
             currentData,
           });
         })

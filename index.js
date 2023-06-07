@@ -6,7 +6,7 @@ const { sequelize } = require("./lib/database.connection");
 const HttpException = require("./exceptions/http.exception");
 const { initRoutes } = require("./routes/index");
 const passport = require("passport");
-const { predict } = require("./algorithm/predictionImpl");
+const { calculatePrediction } = require("./algorithm/linearRegression");
 
 require("./utils/passportConfig")(passport);
 app.use(cors());
@@ -55,6 +55,12 @@ app.get("/test", (req, res) => {
 // );
 
 // Serve static files
+const financeData = [
+  { month: 1, amount: 5000 },
+  { month: 2, amount: 5000 },
+  { month: 3, amount: 0 },
+];
+calculatePrediction(financeData);
 
 //if Routes Not Found
 app.use((req, res, next) => {
