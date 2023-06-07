@@ -32,7 +32,9 @@ class ChartController {
     try {
       const { targetMonth, type } = req.query;
 
-      const categoryData = await category.findAll();
+      const categoryData = await category.findAll({
+        where: { id: { [Op.lt]: 9 } },
+      });
       const returnData = [];
 
       const totalByCategory = async (user, categoryId, type) => {
