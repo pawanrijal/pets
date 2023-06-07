@@ -1,29 +1,43 @@
-const predict = async (financeData, type, targetMonth) => {
-  const financeRecords = financeData.filter((record) => record.type === type);
+const { finance } = require("../lib/database.connection");
 
-  const averageFinance = calculateAverageAmount(financeRecords);
-  const currentFinance = calculateTotalAmountForMonth(
-    financeRecords,
-    targetMonth
+const previousMonthData = async (categoryId, type, user) => {
+  const previousThreeMonths = getPreviousThreeMonths();
+  const financeSum = await Promise.all(
+    previousThreeMonths.map(async (month) => {
+      console.log(month);
+      const financeData = await finance.findAll({
+        where: { userId: user.id, type, categoryId },
+      });
+      const financeDataOfMonth = financeData
+        .filter((record) => record.date.startsWith(month))
+        .reduce((sum, record) => sum + record.amount, 0);
+      console.log(financeDataOfMonth);
+      return { month, amount: financeDataOfMonth };
+    })
   );
-
-  const financeDifference = currentFinance - averageFinance;
-
-  const predictedFinance = currentFinance + financeDifference;
-
-  return predictedFinance;
+  return financeSum;
 };
 
-const calculateAverageAmount = (records) => {
-  const totalAmount = records.reduce((sum, record) => sum + record.amount, 0);
-  return records.length > 0 ? totalAmount / records.length : 0;
+const getPreviousThreeMonths = () => {
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1; // Add 1 because months are zero-based
+  const currentYear = currentDate.getFullYear();
+
+  const previousMonths = [];
+
+  for (let i = 1; i <= 3; i++) {
+    let month = currentMonth - i;
+    let year = currentYear;
+
+    if (month <= 0) {
+      month += 12;
+      year--;
+    }
+    const formattedMonth = month.toString().padStart(2, "0");
+    previousMonths.push(year + "-" + formattedMonth);
+  }
+
+  return previousMonths;
 };
 
-const calculateTotalAmountForMonth = (records, targetMonth) => {
-  const totalAmount = records
-    .filter((record) => record.date.startsWith(targetMonth))
-    .reduce((sum, record) => sum + record.amount, 0);
-  return totalAmount;
-};
-
-module.exports = { predict };
+module.exports = { previousMonthData, getPreviousThreeMonths };
