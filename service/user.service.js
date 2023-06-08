@@ -27,15 +27,8 @@ class UserService {
       if (payload.password == payload.confirmPassword) {
         const { password } = payload;
         payload.password = await hashPassword(password);
-<<<<<<< HEAD
-        console.log(payload);
-        const userData = await user.create(payload); //user create
-        payload.password = hashPassword(password);
-=======
         const encryptedData = EncryptUser(payload);
         const userData = await user.create(encryptedData); //user create
->>>>>>> 8b7cf3c08ba18fc7d1771de7187866e7b74a3ae6
-        // await userRole.create({ userId: userData.id, roleId: 2 });//create role for default customer
         userData.password = undefined;
         return userData;
       } else {
@@ -119,24 +112,21 @@ class UserService {
 
   //verify token
   async verifyToken(payload, id) {
-    const _user = await user.findOne({ where: { resetPasswordToken: payload.token, id: id } });
-    if (!_user)
-      throw new notFoundException("User");
-    if (await this.checkExpiryDate(_user))
-      throw new tokenExpiredException();
+    const _user = await user.findOne({
+      where: { resetPasswordToken: payload.token, id: id },
+    });
+    if (!_user) throw new notFoundException("User");
+    if (await this.checkExpiryDate(_user)) throw new tokenExpiredException();
     return true;
   }
 
-
   //reset password
   async resetPassword(payload, id) {
-    await this.verifyToken(payload.token, id);
     await this.verifyToken(payload.token, id);
 
     const _user = await this.findById(id);
 
     const { password } = payload;
-    payload.password = hashPassword(password);
     payload.password = hashPassword(password);
     await user.update(payload, {
       where: { id: _user.id },

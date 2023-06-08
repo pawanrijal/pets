@@ -72,10 +72,8 @@ class TransactionController {
 
   async delete(req, res, next) {
     try {
-      const transactionData = await transactionService.delete(
-        req.body.transactionId,
-        req.user
-      );
+      const { id } = req.params;
+      const transactionData = await transactionService.delete(id, req.user);
       successResponse(res, 200, transactionData, "Transaction Deleted");
     } catch (err) {
       next(err);
