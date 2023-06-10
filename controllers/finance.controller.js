@@ -6,7 +6,8 @@ class FinanceController {
   async create(req, res, next) {
     try {
       const finance = await financeService.create(req.body, req.user);
-      successResponse(res, 200, finance, "Finance Created");
+      const message = finance.type === "expense" ? "Expense" : "Earning";
+      successResponse(res, 200, finance, `${message} Created`);
     } catch (err) {
       console.log(err);
       next(err);
@@ -28,7 +29,8 @@ class FinanceController {
         offset: option.offset,
         total: financeData.total,
       };
-      successResponse(res, 200, financeData.data, "Finance fetched", meta);
+      const message = req.body.type === "expense" ? "Expense" : "Earning";
+      successResponse(res, 200, financeData.data, `${message} Fetched`, meta);
     } catch (err) {
       console.log(err);
       next(err);
@@ -42,7 +44,8 @@ class FinanceController {
       if (financeData === null) {
         throw new notFoundException("Finance");
       }
-      successResponse(res, 200, financeData, "Finance fetched");
+      const message = financeData.type === "expense" ? "Expense" : "Earning";
+      successResponse(res, 200, financeData, `${message} Fetched`);
     } catch (err) {
       next(err);
     }
@@ -52,7 +55,8 @@ class FinanceController {
     const { id } = req.params;
     try {
       const financeData = await financeService.update(req.body, id, req.user);
-      successResponse(res, 200, financeData, "Finance updated");
+      const message = financeData.type === "expense" ? "Expense" : "Earning";
+      successResponse(res, 200, financeData, `${message} updated`);
     } catch (err) {
       next(err);
     }
@@ -62,7 +66,8 @@ class FinanceController {
     const { id } = req.params;
     try {
       const financeData = await financeService.delete(id, req.user);
-      successResponse(res, 200, financeData, "Finance deleted");
+      const message = financeData.type === "expense" ? "Expense" : "Earning";
+      successResponse(res, 200, financeData, `${message} deleted`);
     } catch (err) {
       next(err);
     }
