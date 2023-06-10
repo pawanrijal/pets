@@ -55,7 +55,7 @@ class FinanceController {
     const { id } = req.params;
     try {
       const financeData = await financeService.update(req.body, id, req.user);
-      const message = financeData.type === "expense" ? "Expense" : "Earning";
+      const message = req.body.type == "expense" ? "Expense" : "Earning";
       successResponse(res, 200, financeData, `${message} updated`);
     } catch (err) {
       next(err);
@@ -66,7 +66,7 @@ class FinanceController {
     const { id } = req.params;
     try {
       const financeData = await financeService.delete(id, req.user);
-      const message = financeData.type === "expense" ? "Expense" : "Earning";
+      const message = req.body.type === "expense" ? "Expense" : "Earning";
       successResponse(res, 200, financeData, `${message} deleted`);
     } catch (err) {
       next(err);
