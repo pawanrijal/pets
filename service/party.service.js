@@ -40,9 +40,8 @@ class PartyService {
     const partyData = await party.findOne({ where: { id, userId: user.id } });
     if (partyData === null || partyData === undefined)
       throw new notFoundException("Party");
-    const returnData = await party.findOne({ where: { userId: user.id } });
     if (user.id !== parseInt(partyData.userId)) throw new Error("Unauthorized");
-    return returnData;
+    return partyData;
   }
   async delete(id, user) {
     await this.findById(id, user);
