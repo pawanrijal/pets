@@ -33,9 +33,8 @@ class GoalService {
     const goalData = await goal.findOne({ where: { id } });
     if (goalData === null || goalData === undefined)
       throw new notFoundException("goal");
-    const returnData = await goal.findOne({ where: { userId: user.id } });
     if (user.id !== parseInt(goalData.userId)) throw new Error("Unauthorized");
-    return returnData;
+    return goalData;
   }
 
   async delete(id, user) {
