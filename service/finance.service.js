@@ -129,10 +129,9 @@ class FinanceService {
     const financeData = await finance.findOne({ where: { id } });
     if (financeData === null || financeData === undefined)
       throw new notFoundException("Finance");
-    const returnData = await finance.findOne({ where: { userId: user.id } });
     if (user.id !== parseInt(financeData.userId))
       throw new Error("Unauthorized");
-    return returnData;
+    return financeData;
   }
 
   async delete(id, user) {

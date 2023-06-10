@@ -1,6 +1,7 @@
 const UserService = require("../service/user.service");
 const successResponse = require("../utils/successResponse");
 const IAes = require("../algorithm/aes");
+const Aes = require("../algorithm/IAes");
 
 require("dotenv").config();
 
@@ -49,6 +50,7 @@ class UserController {
       user.password = undefined;
       user.resetPasswordToken = undefined;
       user.resetPasswordExpires = undefined;
+      user.email = IAes.decrypt(user.email, process.env.ENCRYPTION_SECRET, 256);
       successResponse(res, 200, user, "User Profile");
     } catch (err) {
       next(err);
