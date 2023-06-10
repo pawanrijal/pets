@@ -55,12 +55,9 @@ class TransactionService {
     const transactionData = await transaction.findOne({ where: { id } });
     if (transactionData === null || transactionData === undefined)
       throw new notFoundException("Transaction");
-    const returnData = await transaction.findOne({
-      where: { userId: user.id },
-    });
     if (user.id !== parseInt(transactionData.userId))
       throw new Error("Unauthorized");
-    return returnData;
+    return transactionData;
   }
 
   async delete(id, user) {
