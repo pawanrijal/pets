@@ -55,12 +55,7 @@ app.get("/test", (req, res) => {
 // );
 
 // Serve static files
-const financeData = [
-  { month: 1, amount: 5000 },
-  { month: 2, amount: 5000 },
-  { month: 3, amount: 0 },
-];
-calculatePrediction(financeData);
+
 
 //if Routes Not Found
 app.use((req, res, next) => {
