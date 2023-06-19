@@ -24,7 +24,7 @@ class NotificationService {
     const total = await notification.count({
       where: { userId: user.id },
     });
-
+    console.log(returnData);
     return { data: returnData, total };
   }
 
