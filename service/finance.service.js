@@ -17,32 +17,32 @@ class FinanceService {
     try {
       payload.userId = _user.id;
       _user = await user.findOne({ where: _user.id, include: goal });
-      if (_user.goals.length > 0) {
-        _user.goals.forEach(async (element) => {
-          payload.goalId = element.id;
-          const limit = await this.isApproachingLimit(payload, _user);
-          if (limit !== undefined || limit !== null) {
-            if (!limit.approached && limit.isApproaching) {
-              let type = `Goal Target is approaching for goal ${element.id}`;
-              await notification.create({
-                type: type,
-                data: JSON.stringify(_user.goals),
-                userId: _user.id,
-                readAt: null,
-              });
-            }
-            if (limit.approached) {
-              let type = `Goal Target is meet for goal ${element.id}`;
-              await notification.create({
-                type: type,
-                data: JSON.stringify(_user.goals),
-                userId: _user.id,
-                readAt: null,
-              });
-            }
-          }
-        });
-      }
+      // if (_user.goals.length > 0) {
+      //   _user.goals.forEach(async (element) => {
+      //     payload.goalId = element.id;
+      //     const limit = await this.isApproachingLimit(payload, _user);
+      //     if (limit !== undefined || limit !== null) {
+      //       if (!limit.approached && limit.isApproaching) {
+      //         let type = `Goal Target is approaching for goal ${element.id}`;
+      //         await notification.create({
+      //           type: type,
+      //           data: JSON.stringify(_user.goals),
+      //           userId: _user.id,
+      //           readAt: null,
+      //         });
+      //       }
+      //       if (limit.approached) {
+      //         let type = `Goal Target is meet for goal ${element.id}`;
+      //         await notification.create({
+      //           type: type,
+      //           data: JSON.stringify(_user.goals),
+      //           userId: _user.id,
+      //           readAt: null,
+      //         });
+      //       }
+      //     }
+      //   });
+      // }
       let data = await finance.create(payload);
       await this.notifyIfExpenseExceedsIncome(_user);
       await t.commit();
