@@ -7,6 +7,7 @@ const ChartRoute = require("./chart.route");
 const GoalRoute = require("./goal.route");
 const NotificationRoute = require("./notification.route");
 const DashboardRoute = require("./dashboard.route");
+const TargetRoute = require("./target.route");
 const {
   imageDecryptionMiddleware,
 } = require("../middleware/imageDecryptionMiddleware");
@@ -23,6 +24,7 @@ exports.initRoutes = (app) => {
   GoalRoute(app);
   NotificationRoute(app);
   DashboardRoute(app);
+  TargetRoute(app);
   // app.use(
   //   "/preview",
   //   imageDecryptionMiddleware,

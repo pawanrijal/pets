@@ -17,34 +17,9 @@ class FinanceService {
     try {
       payload.userId = _user.id;
       _user = await user.findOne({ where: _user.id, include: goal });
-      // if (_user.goals.length > 0) {
-      //   _user.goals.forEach(async (element) => {
-      //     payload.goalId = element.id;
-      //     const limit = await this.isApproachingLimit(payload, _user);
-      //     if (limit !== undefined || limit !== null) {
-      //       if (!limit.approached && limit.isApproaching) {
-      //         let type = `Goal Target is approaching for goal ${element.id}`;
-      //         await notification.create({
-      //           type: type,
-      //           data: JSON.stringify(_user.goals),
-      //           userId: _user.id,
-      //           readAt: null,
-      //         });
-      //       }
-      //       if (limit.approached) {
-      //         let type = `Goal Target is meet for goal ${element.id}`;
-      //         await notification.create({
-      //           type: type,
-      //           data: JSON.stringify(_user.goals),
-      //           userId: _user.id,
-      //           readAt: null,
-      //         });
-      //       }
-      //     }
-      //   });
-      // }
       let data = await finance.create(payload);
       await this.notifyIfExpenseExceedsIncome(_user);
+      await this.notifyIfPrevExpenseExceedsExpense(_user);
       await t.commit();
       return data;
     } catch (e) {
@@ -274,6 +249,20 @@ class FinanceService {
     }
   }
 
+  async notifyIfPrevExpenseExceedsExpense(user) {
+    const currentMonthExpenses = await this.calculateCurrentMonthExpense(user);
+    const previousMonthExpense = await this.calculatePreviousMonthExpense(user);
+
+    if (currentMonthExpenses > previousMonthExpense) {
+      await notification.create({
+        type: "Your expenses for this month exceed your expense from the previous month.Please limit your expenses",
+        data: null,
+        userId: user.id,
+        readAt: null,
+      });
+    }
+  }
+
   async calculateCurrentMonthExpense(user) {
     const currentDate = new Date();
     const firstDay = new Date(
@@ -311,7 +300,54 @@ class FinanceService {
       console.log("Current month expense:", totalExpense);
       return totalExpense;
     } catch (error) {
-      console.error("Error calculating current month expense:", error);
+      console.error("Error catlculating current month expense:", error);
+      throw error;
+    }
+  }
+
+  async calculatePreviousMonthExpense() {
+    const currentDate = new Date();
+    const previousMonthDate = new Date();
+    previousMonthDate.setMonth(previousMonthDate.getMonth() - 1);
+
+    // Get the first and last day of the previous month
+    const firstDay = new Date(
+      previousMonthDate.getFullYear(),
+      previousMonthDate.getMonth(),
+      1
+    );
+    const lastDay = new Date(
+      previousMonthDate.getFullYear(),
+      previousMonthDate.getMonth() + 1,
+      0
+    );
+
+    try {
+      // Retrieve income records for the previous month
+      const previousMonthExpenses = await finance.findAll({
+        where: {
+          type: "expense",
+          date: {
+            [Op.between]: [
+              firstDay.toISOString().split("T")[0],
+              lastDay.toISOString().split("T")[0],
+            ],
+          },
+          userId: user.id,
+        },
+      });
+
+      // Calculate the total income
+      const totalExpense = previousMonthExpenses.reduce(
+        (sum, expense) => sum + expense.amount,
+        0
+      );
+
+      console.log("Previous month expense:", totalExpense);
+
+      return totalExpense;
+    } catch (error) {
+      console.error("Error calculating previous month expense:", error);
       throw error;
     }
   }
