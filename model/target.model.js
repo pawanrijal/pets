@@ -12,12 +12,25 @@ module.exports = (sequelize, type) => {
         allowNull: false,
       },
       targetAmount: {
-        type: type.DOUBLE,
+        type: type.INTEGER,
+        allowNull: false,
+        default: 0,
+      },
+      savedAlready: {
+        type: type.INTEGER,
         allowNull: false,
         default: 0,
       },
       description: {
         type: type.TEXT,
+        allowNull: true,
+      },
+      targetReached: {
+        type: type.BOOLEAN,
+        default: false,
+      },
+      category: {
+        type: type.INTEGER,
         allowNull: false,
       },
     },

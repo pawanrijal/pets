@@ -56,7 +56,6 @@ app.get("/test", (req, res) => {
 
 // Serve static files
 
-
 //if Routes Not Found
 app.use((req, res, next) => {
   const err = new HttpException(404, "Route doesnot exist");
