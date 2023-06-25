@@ -5,6 +5,8 @@ const {
   party,
 } = require("../lib/database.connection");
 const { SendMail } = require("./sendMail");
+const { Server } = require("socket.io");
+const { sendFirebase } = require("./firebseNotification");
 
 const getTodayDate = () => {
   const today = new Date();
@@ -20,6 +22,7 @@ const sendNotification = async (user) => {
     where: {
       paymentDate: getTodayDate(),
       [Op.or]: [{ notified: null }, { notified: false }],
+      userId: user.id,
     },
   });
   try {
@@ -37,6 +40,8 @@ const sendNotification = async (user) => {
         }
         const sendMail = new SendMail(user.email, "Payment Notification", html);
         sendMail.send();
+        console.log(user.deviceToken);
+        sendFirebase("Payment Notification", html, user.deviceToken);
         await notification.create({
           type: html,
           data: JSON.stringify(element),

@@ -5,6 +5,7 @@ const successResponse = require("../utils/successResponse");
 class FinanceController {
   async create(req, res, next) {
     try {
+      console.log(req.body, req.user);
       const finance = await financeService.create(req.body, req.user);
       const message = finance.type === "expense" ? "Expense" : "Earning";
       successResponse(res, 200, finance, `${message} Created`);

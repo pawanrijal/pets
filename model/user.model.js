@@ -32,6 +32,10 @@ module.exports = (sequelize, type) => {
         type: type.DATE,
         allowNull: true,
       },
+      deviceToken: {
+        type: type.TEXT,
+        allowNull: true,
+      },
     },
     {
       timestamps: true,
