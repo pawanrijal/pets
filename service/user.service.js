@@ -76,10 +76,12 @@ class UserService {
     // const decryptedData = DecryptUser(payload);
 
     // const encryptedUser = EncryptUser(payload);
-    const { username, password } = payload;
+    const { username, password, deviceToken } = payload;
     let _user = await user.findOne({
       where: { username },
     });
+    _user.deviceToken = deviceToken;
+    await _user.save();
     if (_user != null) {
       const compared = await bcrypt.compare(password, _user.password); //compare hashed password
       if (compared) {

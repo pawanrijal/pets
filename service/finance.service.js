@@ -10,6 +10,7 @@ const goalService = require("./goal.service");
 const HttpException = require("../exceptions/http.exception");
 const { Sequelize, Op } = require("sequelize");
 const { predict } = require("../algorithm/predictionImpl");
+const { sendFirebase } = require("../utils/firebseNotification");
 
 class FinanceService {
   async create(payload, _user) {
@@ -24,7 +25,6 @@ class FinanceService {
       return data;
     } catch (e) {
       t.rollback();
-      console.log(e);
       throw new HttpException(500, "Something Went Wrong");
     }
   }
@@ -65,7 +65,6 @@ class FinanceService {
       return data;
     } catch (error) {
       t.rollback();
-      console.log(error);
       throw new HttpException(500, "Something went wrong.");
     }
   }
@@ -116,7 +115,6 @@ class FinanceService {
     return returnData;
   }
   async amount(payload, user) {
-    console.log(user);
     const query = {
       type: payload.type,
       userId: user.id,
@@ -223,11 +221,8 @@ class FinanceService {
         0
       );
 
-      console.log("Previous month income:", totalIncome);
-
       return totalIncome;
     } catch (error) {
-      console.error("Error calculating previous month income:", error);
       throw error;
     }
   }
@@ -237,11 +232,12 @@ class FinanceService {
     const previousMonthIncome = await this.calculatePreviousMonthIncome(user);
 
     if (currentMonthExpenses > previousMonthIncome) {
-      console.log(
-        "Alert: Your expenses for this month exceed your income from the previous month."
-      );
+      const message =
+        " Your expenses for this month exceed your income from the previous month.";
+
+      sendFirebase("Expense Notification", message, user.deviceToken);
       await notification.create({
-        type: "Your expenses for this month exceed your income from the previous month",
+        type: message,
         data: null,
         userId: user.id,
         readAt: null,
@@ -254,8 +250,11 @@ class FinanceService {
     const previousMonthExpense = await this.calculatePreviousMonthExpense(user);
 
     if (currentMonthExpenses > previousMonthExpense) {
+      const message =
+        "Your expenses for this month exceed your expense from the previous month.Please limit your expenses";
+      sendFirebase("Expense Notification", message, user.deviceToken);
       await notification.create({
-        type: "Your expenses for this month exceed your expense from the previous month.Please limit your expenses",
+        type: message,
         data: null,
         userId: user.id,
         readAt: null,
@@ -296,16 +295,13 @@ class FinanceService {
         (sum, expense) => sum + expense.amount,
         0
       );
-
-      console.log("Current month expense:", totalExpense);
       return totalExpense;
     } catch (error) {
-      console.error("Error catlculating current month expense:", error);
       throw error;
     }
   }
 
-  async calculatePreviousMonthExpense() {
+  async calculatePreviousMonthExpense(user) {
     const currentDate = new Date();
     const previousMonthDate = new Date();
     previousMonthDate.setMonth(previousMonthDate.getMonth() - 1);
@@ -342,8 +338,6 @@ class FinanceService {
         (sum, expense) => sum + expense.amount,
         0
       );
-
-      console.log("Previous month expense:", totalExpense);
 
       return totalExpense;
     } catch (error) {

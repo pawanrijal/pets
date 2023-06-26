@@ -6,7 +6,7 @@ const { sequelize } = require("./lib/database.connection");
 const HttpException = require("./exceptions/http.exception");
 const { initRoutes } = require("./routes/index");
 const passport = require("passport");
-const { calculatePrediction } = require("./algorithm/linearRegression");
+const admin = require("firebase-admin");
 
 require("./utils/passportConfig")(passport);
 app.use(cors());
