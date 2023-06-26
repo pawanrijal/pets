@@ -11,6 +11,10 @@ module.exports = (sequelize, type) => {
         type: type.STRING,
         allowNull: false,
       },
+      desireDate: {
+        type: type.STRING,
+        allowNull: false,
+      },
       targetAmount: {
         type: type.INTEGER,
         allowNull: false,
@@ -32,6 +36,10 @@ module.exports = (sequelize, type) => {
       category: {
         type: type.INTEGER,
         allowNull: false,
+      },
+      notified: {
+        type: type.BOOLEAN,
+        default: false,
       },
     },
     {
