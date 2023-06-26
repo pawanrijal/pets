@@ -18,6 +18,9 @@ const targetSchema = Joi.object({
   category: Joi.number().messages({
     "number.required": "Category is required",
   }),
+  desireDate: Joi.string().required().messages({
+    "any.required": "Desire Date is required",
+  }),
 });
 
 module.exports = { targetSchema };

@@ -5,7 +5,12 @@ const {
 } = require("../exceptions/tokenExpired.exception");
 
 const AuthenticationException = require("../exceptions/authentication.exception");
-const { sendNotification } = require("../utils/sendNotification");
+const {
+  sendNotification,
+  checkTodayTarget,
+} = require("../utils/sendNotification");
+const dashboardService = require("../service/dashboard.service");
+const targetService = require("../service/target.service");
 
 const authenticationMiddleware = async (req, res, next) => {
   try {
@@ -30,6 +35,9 @@ const authenticationMiddleware = async (req, res, next) => {
 
     // send notification of user
     await sendNotification(_user);
+    await checkTodayTarget(_user);
+
+    await targetService.checkReachAmount(_user);
     // `user` is authorized pass the control to next middleware
     next();
   } catch (err) {

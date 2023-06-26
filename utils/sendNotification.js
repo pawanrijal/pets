@@ -3,6 +3,7 @@ const {
   transaction,
   notification,
   party,
+  target,
 } = require("../lib/database.connection");
 const { SendMail } = require("./sendMail");
 const { Server } = require("socket.io");
@@ -62,4 +63,46 @@ const sendNotification = async (user) => {
   }
 };
 
-module.exports = { sendNotification };
+const checkTodayTarget = async (user) => {
+  const todayTargets = await target.findAll({
+    where: {
+      desireDate: getTodayDate(),
+      [Op.or]: [{ targetReached: null }, { targetReached: false }],
+      [Op.or]: [{ notified: null }, { notified: false }],
+      userId: user.id,
+    },
+  });
+
+  try {
+    if (todayTargets.length > 0) {
+      todayTargets.forEach(async (element) => {
+        const message = `You have target of ${element.name} is expired today.`;
+        const sendMail = new SendMail(
+          user.email,
+          "Target Notification",
+          message
+        );
+        sendMail.send();
+        console.log(user.deviceToken);
+        sendFirebase("Target Notification", message, user.deviceToken);
+        await notification.create({
+          type: message,
+          data: JSON.stringify(element),
+          userId: user.id,
+          readAt: null,
+        });
+        await target.update(
+          { notified: true },
+          {
+            where: { id: element.id },
+            attributes: { exclude: ["createdAt", "updatedAt"] },
+          }
+        );
+      });
+    }
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+module.exports = { sendNotification, checkTodayTarget };

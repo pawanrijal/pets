@@ -7,18 +7,19 @@ class DashboardService {
     let expenseFilter = { type: "expense", userId: user.id };
     let cashInFilter = { type: "in", userId: user.id };
     let cashOutFilter = { type: "out", userId: user.id };
-
-    if (range.startDate && range.endDate) {
-      incomeFilter.date = { [Op.between]: [range.startDate, range.endDate] };
-      expenseFilter.date = {
-        [Op.between]: [range.startDate, range.endDate],
-      };
-      cashInFilter.date = {
-        [Op.between]: [range.startDate, range.endDate],
-      };
-      cashOutFilter.date = {
-        [Op.between]: [range.startDate, range.endDate],
-      };
+    if (range) {
+      if (range.startDate && range.endDate) {
+        incomeFilter.date = { [Op.between]: [range.startDate, range.endDate] };
+        expenseFilter.date = {
+          [Op.between]: [range.startDate, range.endDate],
+        };
+        cashInFilter.date = {
+          [Op.between]: [range.startDate, range.endDate],
+        };
+        cashOutFilter.date = {
+          [Op.between]: [range.startDate, range.endDate],
+        };
+      }
     }
 
     const totalIncome =
