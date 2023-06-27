@@ -56,8 +56,9 @@ class TargetService {
     });
     const promises = targets
       .filter(
-        ({ targetAmount, notified }) =>
-          totalBalance >= targetAmount && (!notified || notified === false)
+        ({ targetAmount, savedAlready, notified }) =>
+          totalBalance + savedAlready >= targetAmount &&
+          (!notified || notified === false)
       )
       .map(async (targetData) => {
         const message = `The target is met for target ${targetData.name} of Rs. ${targetData.targetAmount}.`;
