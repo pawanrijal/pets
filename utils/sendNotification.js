@@ -33,11 +33,9 @@ const sendNotification = async (user) => {
           where: { id: element.partyId },
         });
         if (element.type == "in") {
-          var html = `Hi ${user.username} 
-      You have ${element.amount} rupees to receive from ${partyData.name}`;
+          var html = `Hi ${user.username}  You have ${element.amount} rupees to give to ${partyData.name}`;
         } else {
-          var html = `Hi ${user.username} 
-      You have ${element.amount} rupees to give to ${partyData.name}`;
+          var html = `Hi ${user.username} You have ${element.amount} rupees to recieve from ${partyData.name}`;
         }
         const sendMail = new SendMail(user.email, "Payment Notification", html);
         sendMail.send();

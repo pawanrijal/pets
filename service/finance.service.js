@@ -11,6 +11,7 @@ const HttpException = require("../exceptions/http.exception");
 const { Sequelize, Op } = require("sequelize");
 const { predict } = require("../algorithm/predictionImpl");
 const { sendFirebase } = require("../utils/firebseNotification");
+const { SendMail } = require("../utils/sendMail");
 
 class FinanceService {
   async create(payload, _user) {
@@ -25,6 +26,7 @@ class FinanceService {
       return data;
     } catch (e) {
       t.rollback();
+      console.log(e)
       throw new HttpException(500, "Something Went Wrong");
     }
   }
@@ -234,7 +236,8 @@ class FinanceService {
     if (currentMonthExpenses > previousMonthIncome) {
       const message =
         " Your expenses for this month exceed your income from the previous month.";
-
+      const sendMail = new SendMail(user.email, "Expense Notification", message);
+      sendMail.send();
       sendFirebase("Expense Notification", message, user.deviceToken);
       await notification.create({
         type: message,
@@ -252,6 +255,10 @@ class FinanceService {
     if (currentMonthExpenses > previousMonthExpense) {
       const message =
         "Your expenses for this month exceed your expense from the previous month.Please limit your expenses";
+      const sendMail = new SendMail(user.email, "Expense Notification", message);
+
+      console.info('Email Send')
+      sendMail.send();
       sendFirebase("Expense Notification", message, user.deviceToken);
       await notification.create({
         type: message,

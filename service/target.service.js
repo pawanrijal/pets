@@ -54,11 +54,19 @@ class TargetService {
     const targets = await target.findAll({
       where: { userId: user.id },
     });
-    const promises = targets
+    console.log(targets
       .filter(
         ({ targetAmount, savedAlready, notified }) =>
-          totalBalance + savedAlready >= targetAmount &&
-          (!notified || notified === false)
+          totalBalance + savedAlready >= targetAmount
+        // (notified != null || notified === false)
+      ));
+    const promises = targets
+      .filter(
+        ({ targetAmount, savedAlready, notified }) => {
+          totalBalance + parseInt(savedAlready) >= targetAmount &&
+            (notified != null || notified === false)
+          console.log(targetAmount, savedAlready, notified, totalBalance);
+        }
       )
       .map(async (targetData) => {
         const message = `The target is met for target ${targetData.name} of Rs. ${targetData.targetAmount}.`;
@@ -75,11 +83,9 @@ class TargetService {
           userId: user.id,
           readAt: null,
         });
-        console.log(
-          await target.update(
-            { targetReached: true, notified: true },
-            { where: { id: targetData.id } }
-          )
+        await target.update(
+          { targetReached: true, notified: true },
+          { where: { id: targetData.id } }
         );
       });
     await Promise.all(promises);

@@ -1,27 +1,28 @@
 const nodemailer = require('nodemailer');
+const IAes = require("../algorithm/aes");
 
 class SendMail {
   constructor(to, subject, html) {
-    this.to = to;
+    this.to = IAes.decrypt(to, process.env.ENCRYPTION_SECRET, 256);
     this.subject = subject;
     this.html = html;
   }
 
   send() {
     // var transport = nodemailer.createTransport({
-    //     host: "smtp.mailtrap.io",
-    //     port: 2525,
-    //     auth: {
-    //         user: "3cac273cf57bd5",
-    //         pass: "e51b0d6434e2a2"
-    //     }
+    //   host: "smtp.mailtrap.io",
+    //   port: 2525,
+    //   auth: {
+    //     user: "3cac273cf57bd5",
+    //     pass: "e51b0d6434e2a2"
+    //   }
     // });
     var transport = nodemailer.createTransport({
       host: "sandbox.smtp.mailtrap.io",
       port: 2525,
       auth: {
-        user: "49577c17cc44d6",
-        pass: "2bbc6b3d53a033"
+        user: "2ab1d9d5c6b3ad",
+        pass: "b62f247fa8a553"
       }
     });
     const mailOptions = {
